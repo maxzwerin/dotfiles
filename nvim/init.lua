@@ -46,6 +46,8 @@ vim.pack.add({
     { src = "https://github.com/windwp/nvim-autopairs" },
     { src = "https://github.com/folke/todo-comments.nvim" },
     { src = "https://github.com/akinsho/toggleterm.nvim", tag = "*", config = true }, -- replace with FTerm?
+    { src = "https://github.com/MeanderingProgrammer/render-markdown.nvim" },
+    { src = "https://github.com/nvim-treesitter/nvim-treesitter", run = ":TSUpdate" },
 })
 
 -- PLUGIN SETUP --
@@ -59,6 +61,25 @@ require "mini.pick".setup({
 require "oil".setup()
 require "toggleterm".setup()
 require "todo-comments".setup()
+require "render-markdown".setup()
+
+local ok, ts_configs = pcall(require, "nvim-treesitter.configs")
+if ok then
+    ts_configs.setup({
+        ensure_installed = { "lua", "c", "cpp", "markdown", "markdown_inline" },
+        highlight = { enable = true },
+        indent = { enable = true },
+        incremental_selection = {
+            enable = true,
+            keymaps = {
+                init_selection = "gnn",
+                node_incremental = "grn",
+                scope_incremental = "grc",
+                node_decremental = "grm",
+            },
+        },
+    })
+end
 
 -- PLUGIN SPECIFIC KEYMAPS --
 map('n', '<leader>f', ":Pick files<CR>")                            -- fuzzy file picker
@@ -73,7 +94,7 @@ map("n", "]t", function() require("todo-comments").jump_next() end) -- jump to n
 map("n", "]t", function() require("todo-comments").jump_prev() end) -- jump to prev TODO commment
 
 -- LSP AUTOCOMPLETE --
-vim.lsp.enable({ "lua_ls", "clangd" })
+vim.lsp.enable({ "lua_ls", "clangd", "markdown" })
 
 vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(ev)

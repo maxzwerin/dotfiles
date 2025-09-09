@@ -77,11 +77,6 @@ require "oil".setup({
 })
 require "toggleterm".setup()
 require "todo-comments".setup()
-require "render-markdown".setup({
-    render_modes = { 'n', 'c', 't', },
-})
-
-require("cmp")
 
 
 -- PLUGIN SPECIFIC KEYMAPS --
@@ -95,7 +90,6 @@ map('t', '<C-o>', [[<C-\><C-n>:ToggleTerm<CR>]], { silent = true }) -- exit term
 
 map("n", "]t", function() require("todo-comments").jump_next() end) -- jump to next TODO commment
 map("n", "]t", function() require("todo-comments").jump_prev() end) -- jump to prev TODO commment
-
 
 -- LSP AUTOCOMPLETE --
 vim.lsp.enable({ "lua_ls", "clangd", "markdown" })
@@ -136,3 +130,56 @@ local ls = require("luasnip")
 map("i", "<C-e>", function() ls.expand_or_jump(1) end, { silent = true })
 map({ "i", "s" }, "<C-J>", function() ls.jump(1) end, { silent = true })
 map({ "i", "s" }, "<C-K>", function() ls.jump(-1) end, { silent = true })
+
+
+-- COMPLETE --
+local cmp = require("cmp")
+
+cmp.setup({
+    snippet = {
+        expand = function(args)
+            require("luasnip").lsp_expand(args.body)
+        end,
+    },
+    mapping = cmp.mapping.preset.insert({
+        ["<C-Space>"] = cmp.mapping.complete(),            -- manual trigger
+        ["<CR>"] = cmp.mapping.confirm({ select = true }), -- accept selected
+        ["<Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+                cmp.select_next_item()
+            elseif require("luasnip").expand_or_locally_jumpable() then
+                require("luasnip").expand_or_jump()
+            else
+                fallback()
+            end
+        end, { "i", "s" }),
+        ["<S-Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+                cmp.select_prev_item()
+            elseif require("luasnip").jumpable(-1) then
+                require("luasnip").jump(-1)
+            else
+                fallback()
+            end
+        end, { "i", "s" }),
+    }),
+    sources = cmp.config.sources({
+        { name = "nvim_lsp" },
+        { name = "luasnip" },
+    }, {
+        { name = "buffer" },
+        { name = "path" },
+    }),
+    window = {
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered(),
+    },
+})
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
+
+
+require "render-markdown".setup({
+    render_modes = { 'n', 'c', 't', },
+})

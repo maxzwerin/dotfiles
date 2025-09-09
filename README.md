@@ -11,12 +11,8 @@ Main goals:
 
 A minimal Neovim setup… with some modern extras
 
-## Features
-- **Modern UI**
-  - Colorscheme: [vague.nvim](https://github.com/vague2k/vague.nvim)
-  - Rounded borders, transparent statusline
-
-- **Core Plugins**
+### Features
+- **Plugins**
   - [oil.nvim](https://github.com/stevearc/oil.nvim) (file explorer)
   - [mini.pick](https://github.com/echasnovski/mini.pick) (fuzzy picker)
   - [toggleterm.nvim](https://github.com/akinsho/toggleterm.nvim) (floating terminal)
@@ -31,7 +27,7 @@ A minimal Neovim setup… with some modern extras
 
 ---
 
-# Zsh Config
+## Zsh Config
 
 Custom `.zshrc` that just works:
 - History + search integration
@@ -39,13 +35,13 @@ Custom `.zshrc` that just works:
 
 ---
 
-# Tmux Config
+## Tmux Config
 
 A basic `.tmux.conf` designed to play nice with nvim.  
 
 ---
 
-# Wezterm Config
+## Wezterm Config
 
 The most barebones possible `wezterm.lua` you can get your hands on.
 

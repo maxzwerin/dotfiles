@@ -22,6 +22,8 @@ _comp_options+=(globdots) # include hidden files
 
 export PATH="/Users/maxzwerin/.local/share/bob/nvim-bin/:$PATH"
 export PATH="/Users/maxzwerin/Library/Python/3.9/bin/:$PATH"
+# export PATH="/opt/homebrew/bin:$PATH"
+# export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
 
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward

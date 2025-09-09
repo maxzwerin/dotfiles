@@ -37,18 +37,30 @@ map({ 'n', 'v' }, '<leader>c', '1z=')                    -- correct spelling err
 
 -- PLUGINS --
 vim.pack.add({
+    -- necessities
     { src = "https://github.com/vague2k/vague.nvim" },
     { src = "https://github.com/stevearc/oil.nvim" },
     { src = "https://github.com/echasnovski/mini.pick" },
+    { src = "https://github.com/nvim-treesitter/nvim-treesitter",          version = "main" },
+
+    -- completion engine
     { src = "https://github.com/neovim/nvim-lspconfig" },
+    { src = "https://github.com/hrsh7th/nvim-cmp" },
+    { src = "https://github.com/hrsh7th/cmp-nvim-lsp" },
+    { src = "https://github.com/hrsh7th/cmp-buffer" },
+    { src = "https://github.com/hrsh7th/cmp-path" },
+    { src = "https://github.com/hrsh7th/cmp-cmdline" },
     { src = "https://github.com/mason-org/mason.nvim" },
     { src = "https://github.com/L3MON4D3/LuaSnip" },
+    { src = "https://github.com/saadparwaiz1/cmp_luasnip" },
+
+    -- bonus plugins
     { src = "https://github.com/windwp/nvim-autopairs" },
     { src = "https://github.com/folke/todo-comments.nvim" },
-    { src = "https://github.com/akinsho/toggleterm.nvim", tag = "*", config = true }, -- replace with FTerm?
-    { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
+    { src = "https://github.com/akinsho/toggleterm.nvim",                  tag = "*",       config = true },
     { src = "https://github.com/MeanderingProgrammer/render-markdown.nvim" },
 })
+
 
 -- PLUGIN SETUP --
 require "mason".setup()
@@ -65,6 +77,11 @@ require "oil".setup({
 })
 require "toggleterm".setup()
 require "todo-comments".setup()
+require "render-markdown".setup({
+    render_modes = { 'n', 'c', 't', },
+})
+
+require("cmp")
 
 
 -- PLUGIN SPECIFIC KEYMAPS --
@@ -79,6 +96,7 @@ map('t', '<C-o>', [[<C-\><C-n>:ToggleTerm<CR>]], { silent = true }) -- exit term
 map("n", "]t", function() require("todo-comments").jump_next() end) -- jump to next TODO commment
 map("n", "]t", function() require("todo-comments").jump_prev() end) -- jump to prev TODO commment
 
+
 -- LSP AUTOCOMPLETE --
 vim.lsp.enable({ "lua_ls", "clangd", "markdown" })
 
@@ -91,6 +109,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
         end
     end,
 })
+
 
 -- LSP DIAGNOSTICS --
 vim.diagnostic.config({
@@ -112,13 +131,8 @@ vim.cmd(":hi statusline guibg=NONE") -- remove background color from statusline
 -- SNIPPETS --
 require("luasnip").setup({ enable_autosnippets = true })
 require("luasnip.loaders.from_lua").load({ paths = "~/.config/nvim/snippets/" })
+
 local ls = require("luasnip")
 map("i", "<C-e>", function() ls.expand_or_jump(1) end, { silent = true })
 map({ "i", "s" }, "<C-J>", function() ls.jump(1) end, { silent = true })
 map({ "i", "s" }, "<C-K>", function() ls.jump(-1) end, { silent = true })
-
-
-require "render-markdown".setup({
-    dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' },
-    render_modes = { 'n', 'c', 't', },
-})

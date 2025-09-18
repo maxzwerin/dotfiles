@@ -14,5 +14,6 @@ config.window_decorations = "RESIZE"
 config.use_fancy_tab_bar = false
 
 config.default_cursor_style = "BlinkingBlock"
+config.scrollback_lines = 3500
 
 return config

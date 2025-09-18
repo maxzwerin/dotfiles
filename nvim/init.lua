@@ -53,6 +53,7 @@ vim.pack.add({
     { src = "https://github.com/mason-org/mason.nvim" },
     { src = "https://github.com/L3MON4D3/LuaSnip" },
     { src = "https://github.com/saadparwaiz1/cmp_luasnip" },
+    { src = "https://github.com/ray-x/lsp_signature.nvim" },
 
     -- bonus plugins
     { src = "https://github.com/windwp/nvim-autopairs" },
@@ -91,18 +92,8 @@ map('t', '<C-o>', [[<C-\><C-n>:ToggleTerm<CR>]], { silent = true }) -- exit term
 map("n", "]t", function() require("todo-comments").jump_next() end) -- jump to next TODO commment
 map("n", "]t", function() require("todo-comments").jump_prev() end) -- jump to prev TODO commment
 
--- LSP AUTOCOMPLETE --
+-- LSP AUTOCOMPLETE (via cmp) --
 vim.lsp.enable({ "lua_ls", "clangd", "markdown" })
-
-vim.api.nvim_create_autocmd('LspAttach', {
-    callback = function(ev)
-        local client = vim.lsp.get_client_by_id(ev.data.client_id)
-        if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_completion) then
-            vim.opt.completeopt = { 'menu', 'menuone', 'noinsert', 'fuzzy', 'popup' }
-            vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
-        end
-    end,
-})
 
 
 -- LSP DIAGNOSTICS --
@@ -132,14 +123,13 @@ map({ "i", "s" }, "<C-J>", function() ls.jump(1) end, { silent = true })
 map({ "i", "s" }, "<C-K>", function() ls.jump(-1) end, { silent = true })
 
 
--- COMPLETE --
+-- CMP SETUP --
 local cmp = require("cmp")
+local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 
 cmp.setup({
     snippet = {
-        expand = function(args)
-            require("luasnip").lsp_expand(args.body)
-        end,
+        expand = function(args) require("luasnip").lsp_expand(args.body) end,
     },
     mapping = cmp.mapping.preset.insert({
         ["<C-Space>"] = cmp.mapping.complete(),            -- manual trigger
@@ -167,8 +157,8 @@ cmp.setup({
         { name = "nvim_lsp" },
         { name = "luasnip" },
     }, {
-        { name = "buffer" },
         { name = "path" },
+        { name = "buffer" }, -- optional, can remove for less noise
     }),
     window = {
         completion = cmp.config.window.bordered(),
@@ -176,10 +166,18 @@ cmp.setup({
     },
 })
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
+-- autopairs integration with cmp
+cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
 
+require("lsp_signature").setup({
+    bind = true,
+    hint_enable = false,      -- show inline hints
+    handler_opts = { border = "rounded" },
+    floating_window = true,  -- show floating window with docs
+})
+
+-- MARKDOWN RENDERING --
 require "render-markdown".setup({
-    render_modes = { 'n', 'c', 't', },
+    render_modes = { 'n', 'c', 't' },
 })

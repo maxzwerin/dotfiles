@@ -38,6 +38,12 @@ alias ll="ls -lah"
 alias ..='cd ..'
 alias ...='cd ../../'
 
+# tmux alias
+alias tn='tmux new-session -s'
+alias tl='tmux list-session'
+alias ta='tmux attach-session'
+
+
 alias v='nvim'
 export NVIM_NIGHTLY_DIR="$HOME/.local/share/nvim/nightly"
 alias nvn="$NVIM_NIGHTLY_DIR/nvim-nightly.sh"
@@ -49,6 +55,5 @@ alias rip="yt-dlp -x --audio-format=\"mp3\""
 autoload edit-command-line
 zle -N edit-command-line
 bindkey '^Xe' edit-command-line
-
 
 MAILSYNC_MUTE=1

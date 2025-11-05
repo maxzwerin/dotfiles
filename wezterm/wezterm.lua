@@ -1,7 +1,8 @@
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
-config.font = wezterm.font("FiraCode Nerd Font")
+-- config.font = wezterm.font("FiraCode Nerd Font")
+config.font = wezterm.font("Iosevka")
 config.font_size = 13
 config.line_height = 1
 

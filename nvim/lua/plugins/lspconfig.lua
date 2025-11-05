@@ -135,7 +135,7 @@ return {
                 settings = {
                     Lua = {
                         diagnostics = {
-                            globals = { "vim" }, -- Recognize 'vim' as a global variable
+                            globals = { "vim" },
                         },
                         workspace = {
                             library = {

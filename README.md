@@ -1,9 +1,10 @@
-# Welcome to the Dotfiles
+# I'm in too deep...
 
 Main goals:
-- [x] Replace bloated IDEs with a lightweight, intuitive Neovim configuration  
-- [x] Built for speed and workflow
-- [x] Easy to maintain / extend
+- [x] Built for speed
+- [x] Easy to maintain
+- [x] Modular and extendable
+- [x] Minimize bloat (except for the LSP)
 
 ---
 
@@ -13,17 +14,19 @@ A minimal Neovim setup… with some modern extras
 
 ### Features
 - **Plugins**
-  - [oil.nvim](https://github.com/stevearc/oil.nvim) (file explorer)
-  - [mini.pick](https://github.com/echasnovski/mini.pick) (fuzzy picker)
-  - [toggleterm.nvim](https://github.com/akinsho/toggleterm.nvim) (floating terminal)
-  - [todo-comments.nvim](https://github.com/folke/todo-comments.nvim) (highlight TODOs)
-  - [render-markdown.nvim](https://github.com/MeanderingProgrammer/render-markdown.nvim)
-
-- **LSP + Autocomplete**
-  - [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
-  - [mason.nvim](https://github.com/mason-org/mason.nvim) (LSP installer - unused for now)
-  - [nvim-cmp](https://github.com/hrsh7th/nvim-cmp) with buffer/path/cmdline sources
-  - [LuaSnip](https://github.com/L3MON4D3/LuaSnip) + [cmp_luasnip](https://github.com/saadparwaiz1/cmp_luasnip)
+  - [alpha.lua](https://github.com/goolord/alpha-nvim) — startup screen  
+  - [autopairs.lua](https://github.com/windwp/nvim-autopairs) — automatic bracket pairing  
+  - [colorizer.lua](https://github.com/norcalli/nvim-colorizer.lua) — highlight color codes  
+  - [completions.lua](https://github.com/hrsh7th/nvim-cmp) — completion engine setup  
+  - [conform.lua](https://github.com/stevearc/conform.nvim) — formatter/linter integration  
+  - [gitsigns.lua](https://github.com/lewis6991/gitsigns.nvim) — Git diff signs in gutter  
+  - [lspconfig.lua](https://github.com/neovim/nvim-lspconfig) — language server setup  
+  - [mash.lua](https://github.com/maxzwerin/mash.nvim) — my own flash.nvim replacement
+  - [mini.lua](https://github.com/echasnovski/mini.nvim) — collection of minimal Lua modules  
+  - [oil.lua](https://github.com/stevearc/oil.nvim) — file explorer  
+  - [tabout.lua](https://github.com/abecodes/tabout.nvim) — tab key behavior outside pairs  
+  - [todo.lua](https://github.com/folke/todo-comments.nvim) — highlight TODOs  
+  - [treesitter.lua](https://github.com/nvim-treesitter/nvim-treesitter) — syntax parsing/highlighting  
 
 ---
 
@@ -37,12 +40,12 @@ Custom `.zshrc` that just works:
 
 ## Tmux Config
 
-A basic `.tmux.conf` designed to play nice with nvim.  
+A basic `.tmux.conf` designed to play nice with nvim? More changes to come...
 
 ---
 
 ## Wezterm Config
 
-The most barebones possible `wezterm.lua` you can get your hands on.
+The most barebones `wezterm.lua` you can get your hands on.
 
 ---

@@ -1,5 +1,6 @@
 local map = vim.keymap.set
-vim.g.mapleader = " "
+local MiniPick = require("mini.pick")
+
 map('n', '<leader>o', ':update<CR> :source<CR>')         -- update & source file
 map('n', '<leader>w', ':write<CR>')                      -- write
 map('n', '<leader>q', ':quit<CR>')                       -- quit
@@ -16,9 +17,8 @@ map('n', 'N', 'Nzzzv')                                   -- centered search
 
 map({ 'n', 'v' }, '<leader>c', '1z=')                    -- correct spelling error under cursor
 
-map('n', '<leader>g', ":Pick grep_live<CR>")             -- fuzzy file picker
-map('n', '<leader>f', ":Pick files<CR>")                 -- fuzzy file picker
-map('n', '<leader>h', ":Pick help<CR>")                  -- fuzzy help search
+map('n', '<leader>g', MiniPick.builtin.grep_live)        -- fuzzy file picker
+map('n', '<leader>f', MiniPick.builtin.files)            -- fuzzy file picker
 map('n', '<leader>e', ":Oil<CR>")                        -- open Oil file explorer
 
 -- map("n", "<leader>E", "<CMD>lua require('oil').open_float('.')<CR>", { noremap = true, silent = true })
@@ -36,19 +36,12 @@ map("v", "J", ":m '>+1<CR>gv=gv") -- Shift visual selected line down
 map("v", "K", ":m '<-2<CR>gv=gv") -- Shift visual selected line up
 map("n", "<leader>t", "bv~")
 
--- colorscheme picker
-map("n", "<C-n>", ":Telescope colorscheme<CR>")
-
 map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
 
 map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
 
 -- see error
 map("n", "<leader>d", vim.diagnostic.open_float)
-
--- go to errors
-map("n", "[d", vim.diagnostic.goto_next)
-map("n", "]d", vim.diagnostic.goto_next)
 
 -- lsp setup
 map("n", "K", vim.lsp.buf.hover)

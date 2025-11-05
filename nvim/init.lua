@@ -1,13 +1,33 @@
 local utils = require("utils")
 
+vim.g.mapleader = " "
+
+local deprecate = vim.deprecate
+vim.deprecate = function() end
+
 require("options")
-require("keymaps")
 require("lazynvim")
+require("keymaps")
 
 vim.cmd.colorscheme("vague")
-vim.cmd(":hi statusline guibg=NONE") -- remove background color from statusline
 vim.o.termguicolors = true
 
 utils.fix_telescope_parens_win()
 
-vim.o.statusline = [[%<%f %h%m%r %y%=%{v:register} %-14.(%l,%c%V%) %p]]
+local statusline = {
+  '%t',
+  '%r',
+  '%m',
+  '%=',
+  '%{&filetype}',
+  ' %2p%%',
+  ' %3l:%-2c '
+}
+
+vim.o.statusline = table.concat(statusline, '')
+vim.cmd(":hi statusline guibg=NONE") -- remove background color from statusline
+
+vim.schedule(function()
+  vim.deprecate = deprecate
+end)
+

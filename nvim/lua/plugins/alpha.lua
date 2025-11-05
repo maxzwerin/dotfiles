@@ -27,9 +27,8 @@ return {
 
         dashboard.section.buttons.val = {
             dashboard.button("b", "⡣  > Browse files", ":Oil<CR>"),
-            dashboard.button("z", "⢵  > Browse Directories", ":Telescope zoxide list<CR>"),
-            dashboard.button("f", "⢏  > Find file", ":Telescope find_files<CR>"),
-            dashboard.button("r", "⡧  > Recent", ":Telescope oldfiles<CR>"),
+            dashboard.button("f", "⢏  > Find file", ":Pick files<CR>"),
+            dashboard.button("r", "⡧  > Recent", ":Pick buffers<CR>"),
         }
 
         dashboard.config.layout = {

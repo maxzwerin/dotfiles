@@ -34,14 +34,14 @@ export EDITOR="nvim"
 alias love="/Applications/love.app/Contents/MacOS/love"
 alias venv="source .venv/bin/activate"
 
-alias ll="ls -lah"
+alias ls="ls -lah"
 alias ..='cd ..'
 alias ...='cd ../../'
 
 # tmux alias
 alias tn='tmux new-session -s'
 alias tl='tmux list-session'
-alias ta='tmux attach-session'
+alias ta='tmux add-session'
 
 
 alias v='nvim'

@@ -1,4 +1,3 @@
-vim.cmd [[set completeopt+=menuone,noselect,popup]]
 vim.cmd([[set mouse=]])           -- disable mouse support entirely
 vim.cmd([[set noswapfile]])       -- disable .swp files from fucking shit up
 vim.opt.winborder = "rounded"     -- rounded borders for floating windows
@@ -27,7 +26,7 @@ vim.pack.add({
     { src = "https://github.com/vague2k/vague.nvim" },
     { src = "https://github.com/stevearc/oil.nvim" },
     { src = "https://github.com/nvim-tree/nvim-web-devicons" },
-    { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
+    { src = "https://github.com/nvim-treesitter/nvim-treesitter",        version = "main" },
     { src = "https://github.com/nvim-telescope/telescope.nvim" },
     { src = "https://github.com/nvim-telescope/telescope-ui-select.nvim" },
     { src = "https://github.com/nvim-lua/plenary.nvim" },
@@ -36,42 +35,40 @@ vim.pack.add({
     { src = "https://github.com/LinArcX/telescope-env.nvim" },
     { src = "https://github.com/iamcco/markdown-preview.nvim" },
     { src = "https://github.com/L3MON4D3/LuaSnip" },
-    { src = "https://github.com/nvim-mini/mini.starter" },
     { src = "https://github.com/windwp/nvim-autopairs" },
     { src = "https://github.com/brenoprata10/nvim-highlight-colors" },
+    { src = "https://github.com/christoomey/vim-tmux-navigator" },
+    -- { src = "https://github.com/hrsh7th/nvim-cmp" },
+    -- { src = "https://github.com/hrsh7th/nvim-cmp-lsp" },
 })
 
-require "mason".setup()                 -- i dislike mason but sometimes its useful
-require "nvim-autopairs".setup()        -- this will always be useful
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = { 'lua', 'markdown', 'c' },
+    callback = function() vim.treesitter.start() end,
+})
+
+require "mason".setup()          -- i dislike mason but sometimes its useful
+require "nvim-autopairs".setup() -- this will always be useful
 require "nvim-highlight-colors".setup()
-
-local starter = require "mini.starter"
-starter.setup({
-    evaluate_single = true,
-    items = {
-        starter.sections.recent_files(9, false),
-    },
-    content_hooks = {
-        starter.gen_hook.adding_bullet(),
-        starter.gen_hook.indexing('all', { 'Builtin actions' }),
-        starter.gen_hook.aligning('center', 'center'),
-    },
-    header = "⢓⡣⡘⢶⠣⣽⠥⡀⢯⣕⣮⠧⢱⡸⡊⣔⣝⢆⢩⣱⡝⢣⢺⡘⢎⢸⣭⢴⣎⠏⡿⠧⢭⣴⠋⢫⢟⣳⢆⣚⡴⢜⢉⢏⣅⢼⣠⡵⠓⢆",
-
-    footer = "⡫⢎⢇⢟⡧⡴⣸⡹⢾⣱⢿⡮⢶⡟⣅⠙⣄⢕⣉⡣⣌⠘⣤⢶⠰⡏⢯⠕⢾⣰⣩⠂⢓⡤⣸⠛⠾⠈⢽⣣⣘⢩⣐⢻⠱⡮⣦⠧⣅⠤",
-})
-
-
-require "vague".setup({ transparent = true })
-vim.cmd("colorscheme vague")
-
-vim.cmd("hi! @function guifg=#c48282")
-vim.cmd("hi! @function.call guifg=#c48282")
 
 require "luasnip".setup({ enable_autosnippets = true })
 require "luasnip.loaders.from_lua".load({ paths = "~/.config/nvim/snippets/" })
 
 local ls = require "luasnip"
+
+require "nvim-treesitter.config".setup({
+    ensure_installed = {
+        'lua_ls'
+    },
+    auto_install = false,
+    highlight = {
+        enable = true,
+        additional_vim_regex_highlighting = false,
+    },
+    indent = {
+        enable = true,
+    },
+})
 
 local telescope = require "telescope"
 telescope.setup({
@@ -89,7 +86,6 @@ telescope.setup({
         }
     }
 })
-
 telescope.load_extension("ui-select")
 
 -- get that juicy lsp up and running
@@ -106,24 +102,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end,
 })
 
--- disable syntax highlighting for .c files... and .h files i guess
-vim.api.nvim_create_autocmd("LspAttach", {
-    group = vim.api.nvim_create_augroup("disable-semantic-tokens-c", {}),
-    callback = function(args)
-        local bufnr = args.buf
-        local ft = vim.bo[bufnr].filetype
-        if ft ~= "c" and ft ~= "h" then
-            return
-        end
+vim.cmd [[set completeopt+=menuone,noselect,popup]]
 
-        local client = vim.lsp.get_client_by_id(args.data.client_id)
-        if client and client.server_capabilities.semanticTokensProvider then
-            client.server_capabilities.semanticTokensProvider = nil
-        end
-    end,
-})
-
-vim.lsp.enable({ "lua_ls", "clangd", })
+vim.lsp.enable({ "lua_ls", "clangd", "marksman" })
 
 require "oil".setup({
     lsp_file_methods = {
@@ -134,13 +115,18 @@ require "oil".setup({
     view_options = {
         show_hidden = true,
     },
-    columns = {},
+    columns = {
+        "icon",
+    },
     float = {
         max_width = 0.7,
         max_height = 0.6,
         border = "rounded",
     },
 })
+
+require "vague".setup({ transparent = true })
+vim.cmd("colorscheme vague")
 
 local builtin = require "telescope.builtin"
 local map = vim.keymap.set
@@ -203,14 +189,27 @@ map({ "n" }, "<leader>Q", "<Cmd>:wqa<CR>", { desc = "Quit all buffers and write.
 
 map({ "n" }, "<leader>md", ":MarkdownPreview<CR>")
 
--- macOS only but its awesome
-map({ "n" }, "<C-f>", "<Cmd>Open .<CR>", { desc = "Open current directory in Finder." })
+--- TMUX ---
+map({ "n" }, "<c-h>", ":wincmd h<CR>")
+map({ "n" }, "<c-j>", ":wincmd j<CR>")
+map({ "n" }, "<c-k>", ":wincmd k<CR>")
+map({ "n" }, "<c-l>", ":wincmd l<CR>")
 
+map({ "n" }, "<C-h>", ":TmuxNavigateLeft<CR>")
+map({ "n" }, "<C-j>", ":TmuxNavigateDown<CR>")
+map({ "n" }, "<C-k>", ":TmuxNavigateUp<CR>")
+map({ "n" }, "<C-l>", ":TmuxNavigateRight<CR>")
+
+-- !!! macOS only !!!
+-- map({ "n" }, "<C-f>", "<Cmd>Open .<CR>", { desc = "Open current directory in Finder." })
+
+--- MOVEMENT COMMANDS ---
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
+--- EXTUI - EXPERIMENTAL ---
 require "vim._extui".enable({
     enable = true, -- Whether to enable or disable the UI
     msg = {        -- Options related to the message module
@@ -221,19 +220,6 @@ require "vim._extui".enable({
     },
 })
 
-local statusline = {
-    '%t',
-    '%r',
-    '%m',
-    '%=',
-    '%{&filetype}',
-    ' %2p%%',
-    ' %3l:%-2c '
-}
-
+--- SIMPLE STATUS LINE ---
+local statusline = { '%t', '%r', '%m', '%=', '%{&filetype}', ' %2p%%', ' %3l:%-2c ' }
 vim.o.statusline = table.concat(statusline, '')
-
-vim.api.nvim_create_autocmd('FileType', {
-    pattern = { 'markdown', 'lua', 'c' },
-    callback = function() vim.treesitter.start() end,
-})

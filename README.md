@@ -9,12 +9,51 @@ Main goals:
 
 ---
 
-**Nvim :** My attempt at a minimal Neovim setup
+**Editor --** neovim 
 
-**Zsh :** Custom `.zshrc` that just works
+**`nvim/init.lua`**
+> pretty minimal setup, only a few plugins needed.
 
-**Tmux :** Decent `.tmux.conf`? More changes to come...
+-
 
-**Wezterm :** Barebones `wezterm.lua`
+**Shell --** zsh
+
+**`zsh/.zshrc`**
+> it just works. nothing too fancy
+
+-
+
+**Terminal --** wezterm / kitty
+
+**`wezterm/wezterm.lua` / `kitty/kitty.conf`**
+> almost identical, kitty works better with hyprland
+
+-
+
+**Terminal Muliplexer --** tmux
+
+**`tmux/tmux.conf`**
+> hella customized to play nice with neovim. no plugins needed
+
+- 
+
+**WM --** Hyprland
+
+**`hypr/*`**
+
+includes configs for: 
+- `hyprland`
+- `hyprlock`
+- `hypridle`
+- `hyprpaper`
+
+> so clean and easy to navigate ... as long as you know the keybinds
+
+-
+
+**App Launcher --** Walker
+
+**`walker/config.toml`**
+> lightweight app launcher used with hyprland
 
 ---

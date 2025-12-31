@@ -5,7 +5,6 @@ PS1="%{$fg[magenta]%}%~%{$fg[red]%} %{$reset_color%}$%b "
 # History in cache directory:
 HISTSIZE=10000
 SAVEHIST=10000
-source <(fzf --zsh)
 
 finder() {
     open .
@@ -20,40 +19,19 @@ zmodload zsh/complist
 
 _comp_options+=(globdots) # include hidden files
 
-export PATH="/Users/maxzwerin/.local/share/bob/nvim-bin/:$PATH"
-export PATH="/Users/maxzwerin/Library/Python/3.9/bin/:$PATH"
-# export PATH="/opt/homebrew/bin:$PATH"
-# export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
-
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
-source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 export EDITOR="nvim"
 
-alias love="/Applications/love.app/Contents/MacOS/love"
-alias venv="source .venv/bin/activate"
-
-alias ls="ls -lah"
+#alias ls="ls -lah"
 alias ..='cd ..'
 alias ...='cd ../../'
 
-# tmux alias
-alias tn='tmux new-session -s'
-alias tl='tmux list-session'
-alias ta='tmux add-session'
-
+alias ta='tmux attach'
 
 alias v='nvim'
-export NVIM_NIGHTLY_DIR="$HOME/.local/share/nvim/nightly"
-alias nvn="$NVIM_NIGHTLY_DIR/nvim-nightly.sh"
 
-export MANPAGER="nvim +Man!"
-alias rip="yt-dlp -x --audio-format=\"mp3\""
-
-# edit command line
-autoload edit-command-line
-zle -N edit-command-line
-bindkey '^Xe' edit-command-line
+alias blink='bash ~/.config/scripts/blink.sh'
 
 MAILSYNC_MUTE=1

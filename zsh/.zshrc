@@ -21,6 +21,7 @@ _comp_options+=(globdots) # include hidden files
 
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
+source usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 export EDITOR="nvim"
 

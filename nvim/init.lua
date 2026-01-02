@@ -204,10 +204,10 @@ map({ "n" }, "<C-l>", ":TmuxNavigateRight<CR>")
 -- map({ "n" }, "<C-f>", "<Cmd>Open .<CR>", { desc = "Open current directory in Finder." })
 
 --- MOVEMENT COMMANDS ---
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
-vim.keymap.set("n", "<C-u>", "<C-u>zz")
-vim.keymap.set("n", "n", "nzzzv")
-vim.keymap.set("n", "N", "Nzzzv")
+map({ "n" }, "<C-d>", "<C-d>zz")
+map({ "n" }, "<C-u>", "<C-u>zz")
+map({ "n" }, "n", "nzzzv")
+map({ "n" }, "N", "Nzzzv")
 
 --- EXTUI - EXPERIMENTAL ---
 require "vim._extui".enable({
@@ -223,3 +223,6 @@ require "vim._extui".enable({
 --- SIMPLE STATUS LINE ---
 local statusline = { '%t', '%r', '%m', '%=', '%{&filetype}', ' %2p%%', ' %3l:%-2c ' }
 vim.o.statusline = table.concat(statusline, '')
+
+local mash = require("mash")
+map({ "n" }, "<leader>m", mash.jump)

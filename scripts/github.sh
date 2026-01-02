@@ -9,7 +9,10 @@ if [[ $url == *github.com* ]]; then
         url="${url/:/\/}"
         url="https://$url"
     fi
-    open "$url"
+    xdg-open "$url" # for linux
+    # open "$url" # for mac
+    # wslview "$url" # for windows/wsl... i think?
 else
     echo "This repository is not hosted on GitHub"
+    exit 1
 fi

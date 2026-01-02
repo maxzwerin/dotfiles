@@ -16,39 +16,39 @@ vim.opt.signcolumn = "yes"        -- always show sign column
 vim.opt.clipboard = "unnamedplus" -- allows clipboard sync between clipboard & nvim env
 vim.opt.wrap = false              -- no wrapping please and thank you
 
-vim.diagnostic.config({ virtual_text = true })
-
 vim.g.mapleader = " "
 
 local utils = require "utils"
 
+local gh = function(x) return "https://github.com/" .. x end
+
 vim.pack.add({
-    { src = "https://github.com/vague2k/vague.nvim" },
-    { src = "https://github.com/stevearc/oil.nvim" },
-    { src = "https://github.com/nvim-tree/nvim-web-devicons" },
-    { src = "https://github.com/nvim-treesitter/nvim-treesitter",        version = "main" },
-    { src = "https://github.com/nvim-telescope/telescope.nvim" },
-    { src = "https://github.com/nvim-telescope/telescope-ui-select.nvim" },
-    { src = "https://github.com/nvim-lua/plenary.nvim" },
-    { src = "https://github.com/neovim/nvim-lspconfig" },
-    { src = "https://github.com/mason-org/mason.nvim" },
-    { src = "https://github.com/LinArcX/telescope-env.nvim" },
-    { src = "https://github.com/iamcco/markdown-preview.nvim" },
-    { src = "https://github.com/L3MON4D3/LuaSnip" },
-    { src = "https://github.com/windwp/nvim-autopairs" },
-    { src = "https://github.com/brenoprata10/nvim-highlight-colors" },
-    { src = "https://github.com/christoomey/vim-tmux-navigator" },
-    -- { src = "https://github.com/hrsh7th/nvim-cmp" },
-    -- { src = "https://github.com/hrsh7th/nvim-cmp-lsp" },
+    { src = gh("vague2k/vague.nvim") },
+    { src = gh("stevearc/oil.nvim") },
+    { src = gh("nvim-tree/nvim-web-devicons") },
+    { src = gh("nvim-treesitter/nvim-treesitter"),        version = "main" },
+    { src = gh("nvim-telescope/telescope.nvim") },
+    { src = gh("nvim-telescope/telescope-ui-select.nvim") },
+    { src = gh("nvim-lua/plenary.nvim") },
+    { src = gh("neovim/nvim-lspconfig") },
+    { src = gh("LinArcX/telescope-env.nvim") },
+    { src = gh("iamcco/markdown-preview.nvim") },
+    { src = gh("L3MON4D3/LuaSnip") },
+    { src = gh("windwp/nvim-autopairs") },
+    { src = gh("brenoprata10/nvim-highlight-colors") },
+    { src = gh("christoomey/vim-tmux-navigator") },
 })
 
+
+--- TREESITTER ---
 vim.api.nvim_create_autocmd('FileType', {
     pattern = { 'lua', 'markdown', 'c' },
     callback = function() vim.treesitter.start() end,
 })
 
-require "mason".setup()          -- i dislike mason but sometimes its useful
-require "nvim-autopairs".setup() -- this will always be useful
+
+--- REQUIRE ALL ---
+require "nvim-autopairs".setup()
 require "nvim-highlight-colors".setup()
 
 require "luasnip".setup({ enable_autosnippets = true })
@@ -70,6 +70,7 @@ require "nvim-treesitter.config".setup({
     },
 })
 
+
 local telescope = require "telescope"
 telescope.setup({
     defaults = {
@@ -88,7 +89,7 @@ telescope.setup({
 })
 telescope.load_extension("ui-select")
 
--- get that juicy lsp up and running
+--- LSP FUNCTIONS ---
 vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('my.lsp', {}),
     callback = function(args)
@@ -102,9 +103,37 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end,
 })
 
-vim.cmd [[set completeopt+=menuone,noselect,popup]]
+vim.api.nvim_create_autocmd("LspAttach", {
+    group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
+    callback = function() end,
+})
 
-vim.lsp.enable({ "lua_ls", "clangd", "marksman" })
+local lspignore = { "oil", "zshrc", "json" }
+
+vim.api.nvim_create_autocmd("BufReadPost", {
+    group = vim.api.nvim_create_augroup("lsp-missing", { clear = true }),
+    callback = function(args)
+        vim.defer_fn(function()
+            print("")
+            local clients = vim.lsp.get_clients({ bufnr = args.buf })
+            if #clients > 0 then return end
+
+            local ft = vim.bo[args.buf].filetype
+            for _, v in ipairs(lspignore) do
+                if (ft == v) then return end
+            end
+
+            local name = vim.api.nvim_buf_get_name(args.buf)
+            if name == "" then return end
+
+            print(("missing lsp: [ %s ] %s"):format(ft, name))
+        end, 150)
+    end,
+})
+
+vim.cmd [[set completeopt+=menuone,noselect,popup]] -- completion menu behavior
+
+vim.lsp.enable({ "lua_ls", "clangd" })
 
 require "oil".setup({
     lsp_file_methods = {
@@ -131,7 +160,9 @@ vim.cmd("colorscheme vague")
 local builtin = require "telescope.builtin"
 local map = vim.keymap.set
 
-map({ "n", "t" }, "<Leader>x", "<Cmd>tabclose<CR>")
+
+vim.diagnostic.config({ virtual_text = true })
+
 
 vim.cmd([[
 	nnoremap g= g+| " g=g=g= is less awkward than g+g+g+
@@ -144,28 +175,50 @@ vim.cmd([[
 	xnoremap <expr> . "<esc><cmd>'<,'>normal! ".v:count1.'.<cr>'
 ]])
 
-map({ "n", "v", "x" }, "<leader>v", "<Cmd>edit $MYVIMRC<CR>", { desc = "Edit " .. vim.fn.expand("$MYVIMRC") })
-map({ "n", "v", "x" }, "<leader>z", "<Cmd>e ~/.config/zsh/.zshrc<CR>", { desc = "Edit .zshrc" })
-map({ "n", "v", "x" }, "<leader>n", ":norm ", { desc = "ENTER NORM COMMAND." })
-map({ "n", "v", "x" }, "<leader>o", "<Cmd>source %<CR>", { desc = "Source " .. vim.fn.expand("$MYVIMRC") })
-map({ "n", "v", "x" }, "<leader>O", "<Cmd>restart<CR>", { desc = "Restart vim." })
-map({ "n", "v", "x" }, "<C-s>", [[:%s]], { desc = "Enter substitue mode in selection" })
-map({ "n", "v", "x" }, "<leader>lf", vim.lsp.buf.format, { desc = "Format current buffer" })
-map({ "n" }, "<leader>f", builtin.find_files, { desc = "Telescope find files" })
--- luasnip binds
+
+--- KEYBINDS ---
+map({ "n", "t" }, "<leader>t", "<Cmd>tabnew<CR>")
+map({ "n", "t" }, "<leader>x", "<Cmd>tabclose<CR>")
+
+map({ "n", "v", "x" }, "<leader>v", "<Cmd>edit $MYVIMRC<CR>")          -- nvim config
+map({ "n", "v", "x" }, "<leader>z", "<Cmd>e ~/.config/zsh/.zshrc<CR>") -- .zshrc
+map({ "n", "v", "x" }, "<leader>n", ":norm ")                          -- norm command
+map({ "n", "v", "x" }, "<leader>o", "<Cmd>source %<CR>")               -- source init.lua
+map({ "n", "v", "x" }, "<leader>O", "<Cmd>restart<CR>")                -- restart nvim
+map({ "n", "v", "x" }, "<leader>R", ":lua vim.pack.update()<CR>")      -- update packages
+map({ "n", "v", "x" }, "<C-s>", [[:%s]])                               -- enter substitution mode in selection
+map({ "n", "v", "x" }, "<leader>lf", vim.lsp.buf.format)               -- format current buffer
+
+map({ "n" }, "<leader>e", "<cmd>Oil<CR>")
+map({ "n" }, "<leader>c", "1z=", { desc = "Autocorrect word under cursor" })
+map({ "n" }, "<leader>md", ":MarkdownPreview<CR>")
+
+map({ "n" }, "<leader>w", "<Cmd>update<CR>", { desc = "Write the current buffer" })
+map({ "n" }, "<leader>q", "<Cmd>:quit<CR>", { desc = "Quit the current buffer." })
+map({ "n" }, "<leader>Q", "<Cmd>:wqa<CR>", { desc = "Quit all buffers and write." })
+
 map({ "i", "s" }, "<C-e>", function() ls.expand_or_jump(1) end, { silent = true })
 map({ "i", "s" }, "<C-J>", function() ls.jump(1) end, { silent = true })
 map({ "i", "s" }, "<C-K>", function() ls.jump(-1) end, { silent = true })
 
+map("n", "<leader>mc", utils.pack_clean)
+
+map("n", "<leader>d", vim.diagnostic.open_float)
+
+map({ "n" }, "<C-d>", "<C-d>zz")
+map({ "n" }, "<C-u>", "<C-u>zz")
+map({ "n" }, "n", "nzzzv")
+map({ "n" }, "N", "Nzzzv")
+
+-- !!! macOS only !!!
+-- map({ "n" }, "<C-f>", "<Cmd>Open .<CR>", { desc = "Open current directory in Finder." })
+
+
+--- TELESCOPE FUNCTIONS ---
 local function git_files() builtin.find_files({ no_ignore = true }) end
 local function grep() builtin.live_grep() end
 
-map("n", "<leader>mc", utils.pack_clean)
-
--- diagnostics float view
-map("n", "<leader>d", vim.diagnostic.open_float)
-
--- hella telescope functions
+map({ "n" }, "<leader>f", builtin.find_files, { desc = "Telescope find files" })
 map({ "n" }, "<leader>g", grep)
 map({ "n" }, "<leader>sg", git_files)
 map({ "n" }, "<leader>sb", builtin.buffers)
@@ -180,14 +233,6 @@ map({ "n" }, "<leader>sc", builtin.git_bcommits)
 map({ "n" }, "<leader>sk", builtin.keymaps)
 map({ "n" }, "<leader>se", "<cmd>Telescope env<cr>")
 
-map({ "n" }, "<leader>e", "<cmd>Oil<CR>")
-map({ "n" }, "<leader>c", "1z=", { desc = "Autocorrect word under cursor" })
-
-map({ "n" }, "<leader>w", "<Cmd>update<CR>", { desc = "Write the current buffer" })
-map({ "n" }, "<leader>q", "<Cmd>:quit<CR>", { desc = "Quit the current buffer." })
-map({ "n" }, "<leader>Q", "<Cmd>:wqa<CR>", { desc = "Quit all buffers and write." })
-
-map({ "n" }, "<leader>md", ":MarkdownPreview<CR>")
 
 --- TMUX ---
 map({ "n" }, "<c-h>", ":wincmd h<CR>")
@@ -200,29 +245,22 @@ map({ "n" }, "<C-j>", ":TmuxNavigateDown<CR>")
 map({ "n" }, "<C-k>", ":TmuxNavigateUp<CR>")
 map({ "n" }, "<C-l>", ":TmuxNavigateRight<CR>")
 
--- !!! macOS only !!!
--- map({ "n" }, "<C-f>", "<Cmd>Open .<CR>", { desc = "Open current directory in Finder." })
-
---- MOVEMENT COMMANDS ---
-map({ "n" }, "<C-d>", "<C-d>zz")
-map({ "n" }, "<C-u>", "<C-u>zz")
-map({ "n" }, "n", "nzzzv")
-map({ "n" }, "N", "Nzzzv")
 
 --- EXTUI - EXPERIMENTAL ---
 require "vim._extui".enable({
-    enable = true, -- Whether to enable or disable the UI
-    msg = {        -- Options related to the message module
-        ---@type 'cmd'|'msg' Where to place regular messages, either in the
-        ---cmdline or in a separate ephemeral message window
+    enable = true,
+    msg = {
         target = 'cmd',
-        timeout = 4000, -- Time a message is visible in the message window.
+        timeout = 4000,
     },
 })
+
 
 --- SIMPLE STATUS LINE ---
 local statusline = { '%t', '%r', '%m', '%=', '%{&filetype}', ' %2p%%', ' %3l:%-2c ' }
 vim.o.statusline = table.concat(statusline, '')
 
+
+--- MASH ---
 local mash = require("mash")
 map({ "n" }, "<leader>m", mash.jump)

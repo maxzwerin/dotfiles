@@ -287,4 +287,5 @@ vim.o.statusline = table.concat(statusline, '')
 
 --- MASH ---
 local mash = require("mash")
-map({ "n" }, "<leader>m", mash.jump)
+mash.setup()
+map({ "n" }, "<leader>/", mash.jump)

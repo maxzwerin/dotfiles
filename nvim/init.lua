@@ -37,6 +37,7 @@ vim.pack.add({
     { src = gh("windwp/nvim-autopairs") },
     { src = gh("brenoprata10/nvim-highlight-colors") },
     { src = gh("christoomey/vim-tmux-navigator") },
+    { src = gh("maxzwerin/mash.nvim") },
 })
 
 
@@ -182,8 +183,12 @@ require "vague".setup({ transparent = true })
 vim.cmd("colorscheme vague")
 
 local builtin = require "telescope.builtin"
+
 local map = vim.keymap.set
 
+local mash = require("mash")
+mash.setup()
+map({ "n" }, "<leader>/", mash.jump)
 
 vim.diagnostic.config({ virtual_text = true })
 
@@ -285,7 +290,3 @@ local statusline = { '%t', '%r', '%m', '%=', '%{&filetype}', ' %2p%%', ' %3l:%-2
 vim.o.statusline = table.concat(statusline, '')
 
 
---- MASH ---
-local mash = require("mash")
-mash.setup()
-map({ "n" }, "<leader>/", mash.jump)

@@ -42,8 +42,13 @@ vim.pack.add({
 
 --- TREESITTER ---
 vim.api.nvim_create_autocmd('FileType', {
-    pattern = { 'lua', 'markdown', 'c' },
-    callback = function() vim.treesitter.start() end,
+    pattern = { 'lua', 'markdown', 'c', 'python' },
+    callback = function()
+        local ok, _ = pcall(vim.treesitter.start)
+        if not ok then
+            print("treesitter parser missing for this filetype")
+        end
+    end,
 })
 
 
@@ -57,10 +62,8 @@ require "luasnip.loaders.from_lua".load({ paths = "~/.config/nvim/snippets/" })
 local ls = require "luasnip"
 
 require "nvim-treesitter.config".setup({
-    ensure_installed = {
-        'lua_ls'
-    },
-    auto_install = false,
+    ensure_installed = { 'lua_ls', 'c', 'bash', 'json', 'markdown', 'python' },
+    auto_install = true,
     highlight = {
         enable = true,
         additional_vim_regex_highlighting = false,
@@ -89,6 +92,7 @@ telescope.setup({
 })
 telescope.load_extension("ui-select")
 
+
 --- LSP FUNCTIONS ---
 vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('my.lsp', {}),
@@ -108,7 +112,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     callback = function() end,
 })
 
-local lspignore = { "oil", "zshrc", "json" }
+local lspignore = { "oil", "zshrc", "json", "python" }
 
 vim.api.nvim_create_autocmd("BufReadPost", {
     group = vim.api.nvim_create_augroup("lsp-missing", { clear = true }),
@@ -131,9 +135,12 @@ vim.api.nvim_create_autocmd("BufReadPost", {
     end,
 })
 
+
+vim.lsp.enable({ "lua_ls", "clangd", "pyright" })
+
+
 vim.cmd [[set completeopt+=menuone,noselect,popup]] -- completion menu behavior
 
-vim.lsp.enable({ "lua_ls", "clangd" })
 
 require "oil".setup({
     lsp_file_methods = {
@@ -141,6 +148,23 @@ require "oil".setup({
         timeout_ms = 1000,
         autosave_changes = true,
     },
+    keymaps = {
+        ["g?"] = { "actions.show_help", mode = "n" },
+        ["<CR>"] = "actions.select",
+        ["<C-t>"] = { "actions.select", opts = { tab = true } },
+        ["<C-p>"] = "actions.preview",
+        ["<C-c>"] = { "actions.close", mode = "n" },
+        ["<C-r>"] = "actions.refresh",
+        ["-"] = { "actions.parent", mode = "n" },
+        ["_"] = { "actions.open_cwd", mode = "n" },
+        ["`"] = { "actions.cd", mode = "n" },
+        ["g~"] = { "actions.cd", opts = { scope = "tab" }, mode = "n" },
+        ["gs"] = { "actions.change_sort", mode = "n" },
+        ["gx"] = "actions.open_external",
+        ["g."] = { "actions.toggle_hidden", mode = "n" },
+        ["g\\"] = { "actions.toggle_trash", mode = "n" },
+    },
+    use_default_keymaps = false,
     view_options = {
         show_hidden = true,
     },

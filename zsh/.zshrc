@@ -24,6 +24,7 @@ bindkey '^[[B' history-search-forward
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 export EDITOR="nvim"
+export SUDO_EDITOR="nvim"
 
 #alias ls="ls -lah"
 alias ..='cd ..'

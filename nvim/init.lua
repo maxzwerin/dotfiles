@@ -20,24 +20,23 @@ vim.g.mapleader = " "
 
 local utils = require "utils"
 
-local gh = function(x) return "https://github.com/" .. x end
 
 vim.pack.add({
-    { src = gh("vague2k/vague.nvim") },
-    { src = gh("stevearc/oil.nvim") },
-    { src = gh("nvim-tree/nvim-web-devicons") },
-    { src = gh("nvim-treesitter/nvim-treesitter"),        version = "main" },
-    { src = gh("nvim-telescope/telescope.nvim") },
-    { src = gh("nvim-telescope/telescope-ui-select.nvim") },
-    { src = gh("nvim-lua/plenary.nvim") },
-    { src = gh("neovim/nvim-lspconfig") },
-    { src = gh("LinArcX/telescope-env.nvim") },
-    { src = gh("iamcco/markdown-preview.nvim") },
-    { src = gh("L3MON4D3/LuaSnip") },
-    { src = gh("windwp/nvim-autopairs") },
-    { src = gh("brenoprata10/nvim-highlight-colors") },
-    { src = gh("christoomey/vim-tmux-navigator") },
-    { src = gh("maxzwerin/mash.nvim") },
+    { src = "https://github.com/vague2k/vague.nvim" },
+    { src = "https://github.com/stevearc/oil.nvim" },
+    { src = "https://github.com/nvim-tree/nvim-web-devicons" },
+    { src = "https://github.com/nvim-treesitter/nvim-treesitter",        version = "main" },
+    { src = "https://github.com/nvim-telescope/telescope.nvim" },
+    { src = "https://github.com/nvim-telescope/telescope-ui-select.nvim" },
+    { src = "https://github.com/nvim-lua/plenary.nvim" },
+    { src = "https://github.com/neovim/nvim-lspconfig" },
+    { src = "https://github.com/LinArcX/telescope-env.nvim" },
+    { src = "https://github.com/iamcco/markdown-preview.nvim" },
+    { src = "https://github.com/L3MON4D3/LuaSnip" },
+    { src = "https://github.com/windwp/nvim-autopairs" },
+    { src = "https://github.com/brenoprata10/nvim-highlight-colors" },
+    { src = "https://github.com/christoomey/vim-tmux-navigator" },
+    { src = "https://github.com/maxzwerin/mash.nvim" },
 })
 
 

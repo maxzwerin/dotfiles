@@ -17,6 +17,6 @@ confirm_os_window_close 0
 
 
 # BEGIN_KITTY_THEME
-# Dracula
+# Monokai
 include current-theme.conf
 # END_KITTY_THEME

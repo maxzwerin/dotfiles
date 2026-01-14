@@ -1,26 +1,61 @@
 set -a terminal-features "tmux-256color:RGB"
 set -g prefix C-SPACE
-set -g set-clipboard on
 set -g mouse on
+set -g set-clipboard on
 
 set -g base-index 1
+set -g renumber-windows on   
+set -g mode-keys vi
 set -g status-position top
-set -g status-justify absolute-centre
+set -g status-justify left
+set -g status-style "bg=default"
+set -g window-status-current-style "fg=black bg=white  "
 set -g status-interval 5
 set -g status-left "#S"
 set -g status-right ""
-set -g status-style "bg=default"
-set -g window-status-current-style "fg=black bg=white  "
 
-set -g renumber-windows on   
-set -g mode-keys vi
 
+fg="#cdcdcd"
+bg="default"
+alt="#6f6f6f"
+accent="#81a2be"
+error="#d8647e"
+warning="#f3be7c"
+
+### STATUS BAR ###
+set -g mode-style "bg=${accent},fg=black"
+set -g message-style "bg=${accent},fg=black"
+
+set -g status-style "fg=${fg},bg=${bg}"
+set -g status-interval 30
+
+set -g status-format[1] " "
+
+set -g status-left ""
+set -g status-right "#[fg=${alt}]#(date '+%I:%M %p') #[fg=${fg}]#(date '+%a %b %d')"
+
+set -g window-status-format " #I "
+set -g window-status-current-format " #I "
+
+set -g window-status-bell-style "bg=#d8647e,nobold"
+set -g window-status-current-style "fg=black,bg=#{?window_zoomed_flag,#f3be7c,#81a2be},nobold"
+
+set -g pane-active-border-style fg=white
+
+### BINDS ###
 bind r source-file "~/.config/tmux/tmux.conf"
 bind b set -g status
 bind-key -n M-BSpace send-keys C-w
 bind g run "bash ~/.config/scripts/github.sh '#{pane_current_path}'"
 bind E show-environment -g
 
+unbind %
+unbind '"'
+bind 'v' split-window -h -c "#{pane_current_path}"
+bind 's' split-window -v -c "#{pane_current_path}"
+
+# Smart pane switching with awareness of Vim splits.
+# See: https://github.com/christoomey/vim-tmux-navigator
 vim_pattern='(\S+/)?g?\.?(view|l?n?vim?x?|fzf)(diff)?(-wrapped)?'
 is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
     | grep -iqE '^[^TXZ ]+ +${vim_pattern}$'"

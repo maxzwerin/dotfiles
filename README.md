@@ -1,14 +1,29 @@
 I'm in too deep...
 ---
-Main goals:
+**Main goals:**
 - [x] Fast
 - [x] Easy to maintain
 - [x] Minimized bloat
 - [x] Actually usable
 
----
+**Current:**
+- 76% Lua
+- 20% Shell
+- 4% CSS
 
-#### Editor -- `neovim`
+Far too much CSS, not enough Shell. Needs work. Not based.
+
+**Todos:**
+- cook up a alpha.nvim / mini.starter type start screen, but more chill
+- ly config
+- grub themes? - secure boot functionality
+- get blink immediately after git clone? its just symlink it can't be that hard
+- make more cool shit 
+
+anyway... here are the dotfiles. i feel like im flying through my computer. bye bye windows
+
+Editor -- `neovim`
+---
 *pretty minimal setup, only a few plugins needed. there are many many binds, these are a few great ones:*
 
 **Elevated Binds**
@@ -48,9 +63,8 @@ Main goals:
 +-----------------+---------------------+
 ```
 
+Shell -- `zsh`
 ---
-
-#### **Shell --** `zsh`
 *it just works. nothing too fancy*
 
 **Some Aliasing**
@@ -65,12 +79,11 @@ Main goals:
 +-----------------+---------------------+
 ```
 
+Terminal -- `wezterm / kitty`
 ---
-
-#### Terminal -- `wezterm / kitty`
 *Almost identical, kitty works better with hyprland*
 
-**Good Kitty Bind**
+**Good Kitty**
 ```
 +-----------------+---------------------+
 | Bind            | Action              |
@@ -78,9 +91,9 @@ Main goals:
 | Ctrl Shift =/-  | +/- font size       |
 +-----------------+---------------------+
 ```
----
 
-#### Terminal Muliplexer -- `tmux`
+Terminal Muliplexer -- `tmux`
+---
 *hella customized to play nice with neovim. no plugins needed*
 
 **Pane Navigation**
@@ -117,10 +130,8 @@ Main goals:
 +-----------------+---------------------+
 ```
 
+**Window Manager --** Hyprland
 ---
-
-#### **Window Manager --** Hyprland
-
 *I'm tempted to try Niri but want to hold out a little longer.*
 
 **Main Binds**
@@ -161,10 +172,8 @@ input  {
 }
 ```
 
+App Launcher -- `Wofi`
 ---
-
-#### App Launcher -- `Wofi`
-
 *lightweight app launcher used with hyprland*
 
 ```
@@ -174,4 +183,3 @@ input  {
 | Ctrl + j/k      | Vim-esq search      |
 +-----------------+---------------------+
 ```
----

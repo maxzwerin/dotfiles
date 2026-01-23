@@ -36,7 +36,7 @@ alias ta='tmux attach'
 alias tn='tmux new -s '
 alias tls='tmux ls'
 
-alias v='nvim .'
+alias v='nvim'
 
 alias blink='bash ~/.config/scripts/blink.sh'
 

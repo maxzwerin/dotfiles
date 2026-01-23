@@ -19,7 +19,7 @@ function M.pack_clean()
 		return
 	end
 
-	local choice = vim.fn.confirm("remove unused plugins?", "&yes\n&no", 2)
+	local choice = vim.fn.confirm("remove unused plugins?", "&yes\n&no", 1)
 	if choice == 1 then
 		vim.pack.del(unused_plugins)
 	end

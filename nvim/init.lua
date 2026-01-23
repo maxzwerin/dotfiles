@@ -1,5 +1,8 @@
-vim.cmd([[set mouse=]])           -- disable mouse support entirely
-vim.cmd([[set noswapfile]])       -- disable .swp files from fucking shit up
+----------------------------------------------------
+--> ESSENTIALS
+----------------------------------------------------
+vim.cmd [[set mouse=]]            -- disable mouse support entirely
+vim.cmd [[set noswapfile]]        -- disable .swp files from fucking shit up
 vim.opt.winborder = "rounded"     -- rounded borders for floating windows
 vim.opt.hlsearch = false          -- dont highlight search matches by default
 vim.opt.tabstop = 4               -- number of spaces that <Tab> counts for
@@ -18,7 +21,7 @@ vim.opt.wrap = false              -- no wrapping please and thank you
 
 vim.g.mapleader = " "
 
-vim.pack.add({
+vim.pack.add {
     { src = "https://github.com/vague2k/vague.nvim" },
     { src = "https://github.com/stevearc/oil.nvim" },
     { src = "https://github.com/nvim-tree/nvim-web-devicons" },
@@ -26,90 +29,46 @@ vim.pack.add({
     { src = "https://github.com/nvim-telescope/telescope.nvim" },
     { src = "https://github.com/nvim-telescope/telescope-ui-select.nvim" },
     { src = "https://github.com/nvim-lua/plenary.nvim" },
-    { src = "https://github.com/neovim/nvim-lspconfig" },
     { src = "https://github.com/LinArcX/telescope-env.nvim" },
     { src = "https://github.com/iamcco/markdown-preview.nvim" },
-    { src = "https://github.com/L3MON4D3/LuaSnip" },
     { src = "https://github.com/windwp/nvim-autopairs" },
     { src = "https://github.com/brenoprata10/nvim-highlight-colors" },
     { src = "https://github.com/christoomey/vim-tmux-navigator" },
     { src = "https://github.com/mason-org/mason.nvim" },
     { src = "https://github.com/maxzwerin/mash.nvim" },
-})
+}
 
-----------------------------------------------------
---> REQUIRE SHIT
-----------------------------------------------------
 local map = vim.keymap.set
 local utils = require "utils"
 
-require "mason".setup()
-require "nvim-autopairs".setup()
-require "nvim-highlight-colors".setup()
-require "luasnip".setup({ enable_autosnippets = true })
-require "luasnip.loaders.from_lua".load({ paths = "~/.config/nvim/snippets/" })
-require "nvim-treesitter.config".setup({
-    ensure_installed = { 'lua_ls', 'c', 'bash', 'json', 'markdown', 'python' },
-    auto_install = true,
-    highlight = {
-        enable = true,
-        additional_vim_regex_highlighting = false,
-    },
-    indent = { enable = true, },
-})
-local ls = require "luasnip"
-local telescope = require "telescope"
-local builtin = require "telescope.builtin"
-telescope.setup({
-    defaults = {
-        preview = { treesitter = false },
-        color_devicons = false,
-        sorting_strategy = "ascending",
-        borderchars = { "", "", "", "", "", "", "", "", },
-        path_displays = { "smart" },
-        layout_config = {
-            height = 100,
-            width = 300,
-            prompt_position = "top",
-            preview_cutoff = 40,
-        }
-    }
-})
-telescope.load_extension("ui-select")
-
-local mash = require("mash")
+local mash = require "mash"
 mash.setup()
 map({ "n" }, "<leader>/", mash.jump)
 
-require "vague".setup({ transparent = true })
-vim.cmd("colorscheme vague")
+----------------------------------------------------
+--> LSP / TREESITTER / COLORS
+----------------------------------------------------
+require "nvim-highlight-colors".setup()
+
+require "nvim-treesitter.config".setup {
+    ensure_installed = { 'lua_ls', 'c', 'bash', 'json', 'markdown', 'python' },
+    highlight = { enable = true },
+}
+
+require "mason".setup()
+
+vim.lsp.enable { "lua_ls", "clangd", "rust_analyzer", "pyright" }
+
+require "vague".setup { transparent = true }
+vim.cmd "colorscheme vague"
+vim.cmd [[set completeopt+=menuone,noselect,popup]]
 
 ----------------------------------------------------
---> LSP FUNCTIONS
+--> OTHER
 ----------------------------------------------------
-vim.api.nvim_create_autocmd('LspAttach', {
-    group = vim.api.nvim_create_augroup('my.lsp', {}),
-    callback = function(args)
-        local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
-        if client:supports_method('textDocument/completion') then
-            -- Optional: trigger autocompletion on EVERY keypress. May be slow!
-            local chars = {}; for i = 32, 126 do table.insert(chars, string.char(i)) end
-            client.server_capabilities.completionProvider.triggerCharacters = chars
-            vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
-        end
-    end,
-})
+require "nvim-autopairs".setup()
 
-vim.api.nvim_create_autocmd("LspAttach", {
-    group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
-    callback = function() end,
-})
-
-vim.lsp.enable({ "lua_ls", "clangd", "pyright" })
-
-vim.cmd [[set completeopt+=menuone,noselect,popup]] -- completion menu behavior
-
-require "oil".setup({
+require "oil".setup {
     lsp_file_methods = {
         enabled = true,
         timeout_ms = 1000,
@@ -139,9 +98,9 @@ require "oil".setup({
         max_height = 0.6,
         border = "rounded",
     },
-})
+}
 
-vim.cmd([[
+vim.cmd [[
 	nnoremap g= g+| " g=g=g= is less awkward than g+g+g+
 	nnoremap gK @='ddkPJ'<cr>| " join lines but reversed. `@=` so [count] works
 	xnoremap gK <esc><cmd>keeppatterns '<,'>-global/$/normal! ddpkJ<cr>
@@ -150,7 +109,7 @@ vim.cmd([[
 	noremap! <c-r><c-f> <c-r>=expand('%:t')<cr>
 	noremap! <c-r><c-p> <c-r>=expand('%:p')<cr>
 	xnoremap <expr> . "<esc><cmd>'<,'>normal! ".v:count1.'.<cr>'
-]])
+]]
 
 
 ----------------------------------------------------
@@ -160,10 +119,10 @@ map({ "n", "t" }, "<leader>t", "<Cmd>tabnew<CR>")
 map({ "n", "t" }, "<leader>x", "<Cmd>tabclose<CR>")
 
 map({ "n", "v", "x" }, "<leader>v", "<Cmd>edit $MYVIMRC<CR>")     -- nvim config
-map({ "n", "v", "x" }, "<leader>z", "<Cmd>edit ~/.zshrc<CR>")     -- .zshrc
+map({ "n", "v", "x" }, "<leader>z", "<Cmd>edit ~/.zshrc<CR>")     -- zshrc config
 map({ "n", "v", "x" }, "<leader>n", ":norm ")                     -- norm command
-map({ "n", "v", "x" }, "<leader>o", "<Cmd>source %<CR>")          -- source init.lua
-map({ "n", "v", "x" }, "<leader>O", "<Cmd>restart<CR>")           -- restart nvim
+map({ "n", "v", "x" }, "<leader>o", ":update<CR> :source<CR>")    -- source
+map({ "n", "v", "x" }, "<leader>O", "<Cmd>restart<CR>")           -- restart
 map({ "n", "v", "x" }, "<leader>R", ":lua vim.pack.update()<CR>") -- update packages
 map({ "n", "v", "x" }, "<C-s>", [[:%s]])                          -- enter substitution mode in selection
 map({ "n", "v", "x" }, "<leader>lf", vim.lsp.buf.format)          -- format current buffer
@@ -173,13 +132,11 @@ map({ "n" }, "<leader>md", ":MarkdownPreview<CR>")                -- markdown pr
 map("n", "<leader>mc", utils.pack_clean)                          -- remove unused plugins
 map("n", "<leader>d", vim.diagnostic.open_float)                  -- open diagnostics float
 
-vim.diagnostic.config({ virtual_text = true })
+vim.diagnostic.config { virtual_text = true }
 
 map({ "n" }, "<leader>w", "<Cmd>:write<CR>")
 map({ "n" }, "<leader>q", "<Cmd>:quit<CR>")
 map({ "n" }, "<leader>Q", "<Cmd>:wqa<CR>")
-
-map({ "i", "s" }, "<C-e>", function() ls.expand_or_jump(1) end, { silent = true })
 
 map({ "n" }, "<C-d>", "<C-d>zz")
 map({ "n" }, "<C-u>", "<C-u>zz")
@@ -187,8 +144,28 @@ map({ "n" }, "n", "nzzzv")
 map({ "n" }, "N", "Nzzzv")
 
 ----------------------------------------------------
---> TELESCOPE FUNCTIONS
+--> TELESCOPE
 ----------------------------------------------------
+local telescope = require "telescope"
+local builtin = require "telescope.builtin"
+telescope.setup {
+    defaults = {
+        preview = { treesitter = false },
+        color_devicons = false,
+        sorting_strategy = "ascending",
+        borderchars = { "", "", "", "", "", "", "", "", },
+        path_displays = { "smart" },
+        layout_config = {
+            height = 100,
+            width = 300,
+            prompt_position = "top",
+            preview_cutoff = 40,
+        }
+    }
+}
+
+telescope.load_extension "ui-select"
+
 local function git_files() builtin.find_files({ no_ignore = true }) end
 local function grep() builtin.live_grep() end
 

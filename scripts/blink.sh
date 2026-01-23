@@ -1,51 +1,63 @@
 #!/usr/bin/env bash
 
+# blink nvim tmux kitty (add folder(s) to ~./config)
+# blink -u wezterm (unlink folder(s) within ~/.config)
+
+# blink -o /usr/local/sddm/themes/ (add folder(s) to specified path)
+# blink -u -o ~/.vim vimrc (unlink folder(s) at specified path)
+
 set -e
 
 DOTFILES="$HOME/dotfiles"
+DEST_BASE="$HOME/.config"
+UNLINK=false
 
 usage() {
     echo "Usage:"
-    echo "   dotlink <name>      Create symlink"
-    echo "   dotlink -u <name>   Remove symlink"
+    echo "  blink [options] <name> [name ...]"
+    echo ""
+    echo "Options:"
+    echo "  -u            Unlink instead of link"
+    echo "  -o <path>     Destination base directory (default: ~/.config)"
     exit 1
 }
 
-UNLINK=false
+while getopts ":uo:" opt; do
+    case "$opt" in
+        u) UNLINK=true ;;
+        o) DEST_BASE="$OPTARG" ;;
+        *) usage ;;
+    esac
+done
+shift $((OPTIND - 1))
 
-case "$1" in
-    -u)
-        UNLINK=true
-        TARGET="$2"
-        ;;
-    *)
-        TARGET="$1"
-        ;;
-esac
+[ "$#" -eq 0 ] && usage
 
-[ -z "$TARGET" ] && usage
+for TARGET in "$@"; do
+    SRC="$DOTFILES/$TARGET"
+    DEST="$DEST_BASE/$TARGET"
 
-SRC="$DOTFILES/$TARGET"
-DEST="$HOME/.config/$TARGET"
+    if [ "$UNLINK" = true ]; then
+        if [ ! -L "$DEST" ]; then
+            echo "Skipped (not a symlink): $DEST"
+            continue
+        fi
 
-if [ "$UNLINK" = true ]; then
-    if [ ! -L "$DEST" ]; then
-        echo "Error: $DEST is not a symlink"
-        exit 1
+        rm "$DEST"
+        echo "Unlinked $DEST"
+        continue
     fi
 
-    rm "$DEST"
-    exit 0
-fi
+    if [ ! -e "$SRC" ]; then
+        echo "Skipped (missing source): $SRC"
+        continue
+    fi
 
-if [ ! -e "$SRC" ]; then
-    echo "Error: $SRC does not exist"
-    exit 1
-fi
+    if [ -e "$DEST" ]; then
+        echo "Skipped (already exists): $DEST"
+        continue
+    fi
 
-if [ -e "$DEST" ]; then
-    echo "Error: $DEST already exists"
-    exit 1
-fi
-
-ln -s "$SRC" "$DEST"
+    mkdir -p "$(dirname "$DEST")"
+    ln -s -v "$SRC" "$DEST"
+done

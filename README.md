@@ -74,8 +74,10 @@ Shell -- `zsh`
 +-----------------+---------------------+
 | ..              | cd ..               |
 | ta              | tmux attach         |
-| v               | nvim                |
-| blink           | Run blink.sh script |
+| tn              | tmux new            |
+| tls             | tmux ls             |
+| v .             | nvim                |
+| blink           | blink.sh script     |
 +-----------------+---------------------+
 ```
 

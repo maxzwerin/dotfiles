@@ -18,9 +18,6 @@ vim.opt.wrap = false              -- no wrapping please and thank you
 
 vim.g.mapleader = " "
 
-local utils = require "utils"
-
-
 vim.pack.add({
     { src = "https://github.com/vague2k/vague.nvim" },
     { src = "https://github.com/stevearc/oil.nvim" },
@@ -36,31 +33,21 @@ vim.pack.add({
     { src = "https://github.com/windwp/nvim-autopairs" },
     { src = "https://github.com/brenoprata10/nvim-highlight-colors" },
     { src = "https://github.com/christoomey/vim-tmux-navigator" },
+    { src = "https://github.com/mason-org/mason.nvim" },
     { src = "https://github.com/maxzwerin/mash.nvim" },
 })
 
+----------------------------------------------------
+--> REQUIRE SHIT
+----------------------------------------------------
+local map = vim.keymap.set
+local utils = require "utils"
 
---- TREESITTER ---
-vim.api.nvim_create_autocmd('FileType', {
-    pattern = { 'lua', 'markdown', 'c', 'python' },
-    callback = function()
-        local ok, _ = pcall(vim.treesitter.start)
-        if not ok then
-            print("treesitter parser missing for this filetype")
-        end
-    end,
-})
-
-
---- REQUIRE ALL ---
+require "mason".setup()
 require "nvim-autopairs".setup()
 require "nvim-highlight-colors".setup()
-
 require "luasnip".setup({ enable_autosnippets = true })
 require "luasnip.loaders.from_lua".load({ paths = "~/.config/nvim/snippets/" })
-
-local ls = require "luasnip"
-
 require "nvim-treesitter.config".setup({
     ensure_installed = { 'lua_ls', 'c', 'bash', 'json', 'markdown', 'python' },
     auto_install = true,
@@ -68,13 +55,11 @@ require "nvim-treesitter.config".setup({
         enable = true,
         additional_vim_regex_highlighting = false,
     },
-    indent = {
-        enable = true,
-    },
+    indent = { enable = true, },
 })
-
-
+local ls = require "luasnip"
 local telescope = require "telescope"
+local builtin = require "telescope.builtin"
 telescope.setup({
     defaults = {
         preview = { treesitter = false },
@@ -92,8 +77,16 @@ telescope.setup({
 })
 telescope.load_extension("ui-select")
 
+local mash = require("mash")
+mash.setup()
+map({ "n" }, "<leader>/", mash.jump)
 
---- LSP FUNCTIONS ---
+require "vague".setup({ transparent = true })
+vim.cmd("colorscheme vague")
+
+----------------------------------------------------
+--> LSP FUNCTIONS
+----------------------------------------------------
 vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('my.lsp', {}),
     callback = function(args)
@@ -112,35 +105,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
     callback = function() end,
 })
 
-local lspignore = { "oil", "zshrc", "json", "python" }
-
-vim.api.nvim_create_autocmd("BufReadPost", {
-    group = vim.api.nvim_create_augroup("lsp-missing", { clear = true }),
-    callback = function(args)
-        vim.defer_fn(function()
-            print("")
-            local clients = vim.lsp.get_clients({ bufnr = args.buf })
-            if #clients > 0 then return end
-
-            local ft = vim.bo[args.buf].filetype
-            for _, v in ipairs(lspignore) do
-                if (ft == v) then return end
-            end
-
-            local name = vim.api.nvim_buf_get_name(args.buf)
-            if name == "" then return end
-
-            print(("missing lsp: [ %s ] %s"):format(ft, name))
-        end, 150)
-    end,
-})
-
-
 vim.lsp.enable({ "lua_ls", "clangd", "pyright" })
 
-
 vim.cmd [[set completeopt+=menuone,noselect,popup]] -- completion menu behavior
-
 
 require "oil".setup({
     lsp_file_methods = {
@@ -165,32 +132,14 @@ require "oil".setup({
         ["g\\"] = { "actions.toggle_trash", mode = "n" },
     },
     use_default_keymaps = false,
-    view_options = {
-        show_hidden = true,
-    },
-    columns = {
-        "icon",
-    },
+    view_options = { show_hidden = true, },
+    columns = { "icon", },
     float = {
         max_width = 0.7,
         max_height = 0.6,
         border = "rounded",
     },
 })
-
-require "vague".setup({ transparent = true })
-vim.cmd("colorscheme vague")
-
-local builtin = require "telescope.builtin"
-
-local map = vim.keymap.set
-
-local mash = require("mash")
-mash.setup()
-map({ "n" }, "<leader>/", mash.jump)
-
-vim.diagnostic.config({ virtual_text = true })
-
 
 vim.cmd([[
 	nnoremap g= g+| " g=g=g= is less awkward than g+g+g+
@@ -204,65 +153,58 @@ vim.cmd([[
 ]])
 
 
---- KEYBINDS ---
+----------------------------------------------------
+--> KEYBINDS
+----------------------------------------------------
 map({ "n", "t" }, "<leader>t", "<Cmd>tabnew<CR>")
 map({ "n", "t" }, "<leader>x", "<Cmd>tabclose<CR>")
 
-map({ "n", "v", "x" }, "<leader>v", "<Cmd>edit $MYVIMRC<CR>")          -- nvim config
-map({ "n", "v", "x" }, "<leader>z", "<Cmd>e ~/.config/zsh/.zshrc<CR>") -- .zshrc
-map({ "n", "v", "x" }, "<leader>n", ":norm ")                          -- norm command
-map({ "n", "v", "x" }, "<leader>o", "<Cmd>source %<CR>")               -- source init.lua
-map({ "n", "v", "x" }, "<leader>O", "<Cmd>restart<CR>")                -- restart nvim
-map({ "n", "v", "x" }, "<leader>R", ":lua vim.pack.update()<CR>")      -- update packages
-map({ "n", "v", "x" }, "<C-s>", [[:%s]])                               -- enter substitution mode in selection
-map({ "n", "v", "x" }, "<leader>lf", vim.lsp.buf.format)               -- format current buffer
+map({ "n", "v", "x" }, "<leader>v", "<Cmd>edit $MYVIMRC<CR>")     -- nvim config
+map({ "n", "v", "x" }, "<leader>z", "<Cmd>edit ~/.zshrc<CR>")     -- .zshrc
+map({ "n", "v", "x" }, "<leader>n", ":norm ")                     -- norm command
+map({ "n", "v", "x" }, "<leader>o", "<Cmd>source %<CR>")          -- source init.lua
+map({ "n", "v", "x" }, "<leader>O", "<Cmd>restart<CR>")           -- restart nvim
+map({ "n", "v", "x" }, "<leader>R", ":lua vim.pack.update()<CR>") -- update packages
+map({ "n", "v", "x" }, "<C-s>", [[:%s]])                          -- enter substitution mode in selection
+map({ "n", "v", "x" }, "<leader>lf", vim.lsp.buf.format)          -- format current buffer
+map({ "n" }, "<leader>e", "<cmd>Oil<CR>")                         -- file explorer
+map({ "n" }, "<leader>c", "1z=")                                  -- autocorrect word under cursor
+map({ "n" }, "<leader>md", ":MarkdownPreview<CR>")                -- markdown preview
+map("n", "<leader>mc", utils.pack_clean)                          -- remove unused plugins
+map("n", "<leader>d", vim.diagnostic.open_float)                  -- open diagnostics float
 
-map({ "n" }, "<leader>e", "<cmd>Oil<CR>")
-map({ "n" }, "<leader>c", "1z=", { desc = "Autocorrect word under cursor" })
-map({ "n" }, "<leader>md", ":MarkdownPreview<CR>")
+vim.diagnostic.config({ virtual_text = true })
 
-map({ "n" }, "<leader>w", "<Cmd>update<CR>", { desc = "Write the current buffer" })
-map({ "n" }, "<leader>q", "<Cmd>:quit<CR>", { desc = "Quit the current buffer." })
-map({ "n" }, "<leader>Q", "<Cmd>:wqa<CR>", { desc = "Quit all buffers and write." })
+map({ "n" }, "<leader>w", "<Cmd>:write<CR>")
+map({ "n" }, "<leader>q", "<Cmd>:quit<CR>")
+map({ "n" }, "<leader>Q", "<Cmd>:wqa<CR>")
 
 map({ "i", "s" }, "<C-e>", function() ls.expand_or_jump(1) end, { silent = true })
-map({ "i", "s" }, "<C-J>", function() ls.jump(1) end, { silent = true })
-map({ "i", "s" }, "<C-K>", function() ls.jump(-1) end, { silent = true })
-
-map("n", "<leader>mc", utils.pack_clean)
-
-map("n", "<leader>d", vim.diagnostic.open_float)
 
 map({ "n" }, "<C-d>", "<C-d>zz")
 map({ "n" }, "<C-u>", "<C-u>zz")
 map({ "n" }, "n", "nzzzv")
 map({ "n" }, "N", "Nzzzv")
 
--- !!! macOS only !!!
--- map({ "n" }, "<C-f>", "<Cmd>Open .<CR>", { desc = "Open current directory in Finder." })
-
-
---- TELESCOPE FUNCTIONS ---
+----------------------------------------------------
+--> TELESCOPE FUNCTIONS
+----------------------------------------------------
 local function git_files() builtin.find_files({ no_ignore = true }) end
 local function grep() builtin.live_grep() end
 
-map({ "n" }, "<leader>f", builtin.find_files, { desc = "Telescope find files" })
-map({ "n" }, "<leader>g", grep)
+map({ "n" }, "<leader>ff", builtin.find_files)
+map({ "n" }, "<leader>fg", grep)
 map({ "n" }, "<leader>sg", git_files)
 map({ "n" }, "<leader>sb", builtin.buffers)
-map({ "n" }, "<leader>si", builtin.grep_string)
 map({ "n" }, "<leader>so", builtin.oldfiles)
-map({ "n" }, "<leader>sh", builtin.help_tags)
-map({ "n" }, "<leader>sm", builtin.man_pages)
 map({ "n" }, "<leader>sr", builtin.lsp_references)
 map({ "n" }, "<leader>sd", builtin.diagnostics)
-map({ "n" }, "<leader>st", builtin.builtin)
 map({ "n" }, "<leader>sc", builtin.git_bcommits)
 map({ "n" }, "<leader>sk", builtin.keymaps)
-map({ "n" }, "<leader>se", "<cmd>Telescope env<cr>")
 
-
---- TMUX ---
+----------------------------------------------------
+--> TMUX INTEGRATION
+----------------------------------------------------
 map({ "n" }, "<c-h>", ":wincmd h<CR>")
 map({ "n" }, "<c-j>", ":wincmd j<CR>")
 map({ "n" }, "<c-k>", ":wincmd k<CR>")
@@ -273,19 +215,8 @@ map({ "n" }, "<C-j>", ":TmuxNavigateDown<CR>")
 map({ "n" }, "<C-k>", ":TmuxNavigateUp<CR>")
 map({ "n" }, "<C-l>", ":TmuxNavigateRight<CR>")
 
-
---- EXTUI - EXPERIMENTAL ---
-require "vim._extui".enable({
-    enable = true,
-    msg = {
-        target = 'cmd',
-        timeout = 4000,
-    },
-})
-
-
---- SIMPLE STATUS LINE ---
+----------------------------------------------------
+--> SIMPLE STATUS LINE
+----------------------------------------------------
 local statusline = { '%t', '%r', '%m', '%=', '%{&filetype}', ' %2p%%', ' %3l:%-2c ' }
 vim.o.statusline = table.concat(statusline, '')
-
-

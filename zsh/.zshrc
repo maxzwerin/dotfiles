@@ -26,7 +26,7 @@ source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 export EDITOR="nvim"
 export SUDO_EDITOR="nvim"
 
-#alias ls="ls -lah"
+alias ll="ls -la"
 alias ..='cd ..'
 alias ...='cd ../../'
 alias ....='cd ../../../'

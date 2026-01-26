@@ -6,21 +6,14 @@ I'm in too deep...
 - [x] Minimized bloat
 - [x] Actually usable
 
-**Current:**
-- 76% Lua
-- 20% Shell
-- 4% CSS
-
-Far too much CSS, not enough Shell. Needs work. Not based.
+Far too much CSS, not enough Shell. Not based yet.
 
 **Todos:**
 - cook up a alpha.nvim / mini.starter type start screen, but more chill
-- ly config
-- grub themes? - secure boot functionality
-- get blink immediately after git clone? its just symlink it can't be that hard
+- vim script ?
 - make more cool shit 
 
-anyway... here are the dotfiles. i feel like im flying through my computer. bye bye windows
+anyway... here are the dotfiles
 
 Editor -- `neovim`
 ---
@@ -46,8 +39,8 @@ Editor -- `neovim`
 +-----------------+---------------------+
 | Bind            | Action              |
 +-----------------+---------------------+
-| <leader>f       | Telescope           |
-| <leader>g       | Live Grep           |
+| <leader>ff      | Telescope           |
+| <leader>fg      | Live Grep           |
 | <leader>/       | Mash                |
 +-----------------+---------------------+
 ```
@@ -57,7 +50,7 @@ Editor -- `neovim`
 +-----------------+---------------------+
 | Bind            | Action              |
 +-----------------+---------------------+
-| <leader>t       | New tab             |
+| <leader>       | New tab             |
 | <leader>x       | Close tab           |
 | Ctrl + h/j/k/l  | Navigate panes      |
 +-----------------+---------------------+
@@ -76,7 +69,7 @@ Shell -- `zsh`
 | ta              | tmux attach         |
 | tn              | tmux new            |
 | tls             | tmux ls             |
-| v .             | nvim                |
+| v               | nvim                |
 | blink           | blink.sh script     |
 +-----------------+---------------------+
 ```
@@ -103,20 +96,20 @@ Terminal Muliplexer -- `tmux`
 +-----------------+---------------------+
 | Bind            | Action              |
 +-----------------+---------------------+
-| Alt + h         | Split vertically    |
-| Alt + v         | Split horizontally  |
-| Alt + x         | Kill current pane   |
+| prefix + -      | Split vertically    |
+| prefix + \      | Split horizontally  |
 | Ctrl + h/j/k/l  | Navigate panes      |
 +-----------------+---------------------+
 ```
 
-**Window Management**
+**Big Boy Binds**
 ```
 +-----------------+---------------------+
 | Bind            | Action              |
 +-----------------+---------------------+
 | prefix + c      | Create new window   |
-| Alt + 1-9       | Jump to window 1-9  |
+| prefix + Ctrl-s | Session navigation  |
+| prefix + g      | Open github @ pwd   |
 +-----------------+---------------------+
 ```
 
@@ -166,7 +159,7 @@ Terminal Muliplexer -- `tmux`
 | mod SHIFT 1-9   | Window to workspace |
 +-----------------+---------------------+
 ```
-**Other QOL Fixes**
+**QOL**
 ```
 input  {
     repeat_rate = 35

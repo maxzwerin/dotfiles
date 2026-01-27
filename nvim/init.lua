@@ -25,7 +25,7 @@ vim.pack.add {
     { src = "https://github.com/vague2k/vague.nvim" },
     { src = "https://github.com/stevearc/oil.nvim" },
     { src = "https://github.com/nvim-tree/nvim-web-devicons" },
-    { src = "https://github.com/nvim-treesitter/nvim-treesitter",        version = "main" },
+    { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
     { src = "https://github.com/nvim-telescope/telescope.nvim" },
     { src = "https://github.com/nvim-telescope/telescope-ui-select.nvim" },
     { src = "https://github.com/nvim-lua/plenary.nvim" },
@@ -35,6 +35,8 @@ vim.pack.add {
     { src = "https://github.com/brenoprata10/nvim-highlight-colors" },
     { src = "https://github.com/christoomey/vim-tmux-navigator" },
     { src = "https://github.com/mason-org/mason.nvim" },
+    { src = "https://github.com/neovim/nvim-lspconfig" },
+    { src = "https://github.com/lewis6991/gitsigns.nvim" },
     { src = "https://github.com/maxzwerin/mash.nvim" },
 }
 
@@ -43,20 +45,19 @@ local utils = require "utils"
 
 local mash = require "mash"
 mash.setup()
-map({ "n" }, "<leader>/", mash.jump)
+map({ "n" }, "<leader>jk", mash.jump)
 
 ----------------------------------------------------
 --> LSP / TREESITTER / COLORS
 ----------------------------------------------------
 require "nvim-highlight-colors".setup()
 
-require "nvim-treesitter.config".setup {
-    ensure_installed = { 'lua_ls', 'c', 'bash', 'json', 'markdown', 'python' },
-    highlight = { enable = true },
-}
+-- check with :checkhealth nvim-treesitter
+require "nvim-treesitter".install { "c", "lua", "vim" }
 
 require "mason".setup()
 
+-- check with :checkhealth vim.lsp
 vim.lsp.enable { "lua_ls", "clangd", "rust_analyzer", "pyright" }
 
 require "vague".setup { transparent = true }
@@ -67,6 +68,7 @@ vim.cmd [[set completeopt+=menuone,noselect,popup]]
 --> OTHER
 ----------------------------------------------------
 require "nvim-autopairs".setup()
+require "gitsigns".setup()
 
 require "oil".setup {
     lsp_file_methods = {
@@ -110,7 +112,6 @@ vim.cmd [[
 	noremap! <c-r><c-p> <c-r>=expand('%:p')<cr>
 	xnoremap <expr> . "<esc><cmd>'<,'>normal! ".v:count1.'.<cr>'
 ]]
-
 
 ----------------------------------------------------
 --> KEYBINDS

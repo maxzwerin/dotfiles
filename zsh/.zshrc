@@ -34,10 +34,10 @@ alias .....='cd ../../../../'
 
 alias ta='tmux attach'
 alias tn='tmux new -s '
-alias tls='tmux ls'
 
 alias v='nvim'
 
 alias blink='bash ~/.config/scripts/blink.sh'
+alias summon='bash ~/.config/scripts/tmux_summoner.sh'
 
 MAILSYNC_MUTE=1

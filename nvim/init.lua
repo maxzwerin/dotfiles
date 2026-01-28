@@ -18,18 +18,16 @@ vim.opt.undofile = true           -- persistent undo
 vim.opt.signcolumn = "yes"        -- always show sign column
 vim.opt.clipboard = "unnamedplus" -- allows clipboard sync between clipboard & nvim env
 vim.opt.wrap = false              -- no wrapping please and thank you
+vim.g.netrw_banner = 0            -- remove ugly netrw banner
 
 vim.g.mapleader = " "
 
 vim.pack.add {
     { src = "https://github.com/vague2k/vague.nvim" },
-    { src = "https://github.com/stevearc/oil.nvim" },
     { src = "https://github.com/nvim-tree/nvim-web-devicons" },
     { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
-    { src = "https://github.com/nvim-telescope/telescope.nvim" },
-    { src = "https://github.com/nvim-telescope/telescope-ui-select.nvim" },
-    { src = "https://github.com/nvim-lua/plenary.nvim" },
-    { src = "https://github.com/LinArcX/telescope-env.nvim" },
+    { src = "https://github.com/junegunn/fzf" },
+    { src = "https://github.com/junegunn/fzf.vim" },
     { src = "https://github.com/iamcco/markdown-preview.nvim" },
     { src = "https://github.com/windwp/nvim-autopairs" },
     { src = "https://github.com/brenoprata10/nvim-highlight-colors" },
@@ -70,37 +68,8 @@ vim.cmd [[set completeopt+=menuone,noselect,popup]]
 require "nvim-autopairs".setup()
 require "gitsigns".setup()
 
-require "oil".setup {
-    lsp_file_methods = {
-        enabled = true,
-        timeout_ms = 1000,
-        autosave_changes = true,
-    },
-    keymaps = {
-        ["g?"] = { "actions.show_help", mode = "n" },
-        ["<CR>"] = "actions.select",
-        ["<C-t>"] = { "actions.select", opts = { tab = true } },
-        ["<C-p>"] = "actions.preview",
-        ["<C-c>"] = { "actions.close", mode = "n" },
-        ["<C-r>"] = "actions.refresh",
-        ["-"] = { "actions.parent", mode = "n" },
-        ["_"] = { "actions.open_cwd", mode = "n" },
-        ["`"] = { "actions.cd", mode = "n" },
-        ["g~"] = { "actions.cd", opts = { scope = "tab" }, mode = "n" },
-        ["gs"] = { "actions.change_sort", mode = "n" },
-        ["gx"] = "actions.open_external",
-        ["g."] = { "actions.toggle_hidden", mode = "n" },
-        ["g\\"] = { "actions.toggle_trash", mode = "n" },
-    },
-    use_default_keymaps = false,
-    view_options = { show_hidden = true, },
-    columns = { "icon", },
-    float = {
-        max_width = 0.7,
-        max_height = 0.6,
-        border = "rounded",
-    },
-}
+-- Switch CWD to the directory of the open buffer
+map({ "n" }, "<leader>cd", ":cd %:p:h<CR>:pwd<CR>")
 
 vim.cmd [[
 	nnoremap g= g+| " g=g=g= is less awkward than g+g+g+
@@ -127,7 +96,7 @@ map({ "n", "v", "x" }, "<leader>O", "<Cmd>restart<CR>")           -- restart
 map({ "n", "v", "x" }, "<leader>R", ":lua vim.pack.update()<CR>") -- update packages
 map({ "n", "v", "x" }, "<C-s>", [[:%s]])                          -- enter substitution mode in selection
 map({ "n", "v", "x" }, "<leader>lf", vim.lsp.buf.format)          -- format current buffer
-map({ "n" }, "<leader>e", "<cmd>Oil<CR>")                         -- file explorer
+map({ "n" }, "<leader>e", ":Ex<CR>")                         -- file explorer
 map({ "n" }, "<leader>c", "1z=")                                  -- autocorrect word under cursor
 map({ "n" }, "<leader>md", ":MarkdownPreview<CR>")                -- markdown preview
 map("n", "<leader>mc", utils.pack_clean)                          -- remove unused plugins
@@ -145,40 +114,12 @@ map({ "n" }, "n", "nzzzv")
 map({ "n" }, "N", "Nzzzv")
 
 ----------------------------------------------------
---> TELESCOPE
+--> FZF
 ----------------------------------------------------
-local telescope = require "telescope"
-local builtin = require "telescope.builtin"
-telescope.setup {
-    defaults = {
-        preview = { treesitter = false },
-        color_devicons = false,
-        sorting_strategy = "ascending",
-        borderchars = { "", "", "", "", "", "", "", "", },
-        path_displays = { "smart" },
-        layout_config = {
-            height = 100,
-            width = 300,
-            prompt_position = "top",
-            preview_cutoff = 40,
-        }
-    }
-}
-
-telescope.load_extension "ui-select"
-
-local function git_files() builtin.find_files({ no_ignore = true }) end
-local function grep() builtin.live_grep() end
-
-map({ "n" }, "<leader>ff", builtin.find_files)
-map({ "n" }, "<leader>fg", grep)
-map({ "n" }, "<leader>sg", git_files)
-map({ "n" }, "<leader>sb", builtin.buffers)
-map({ "n" }, "<leader>so", builtin.oldfiles)
-map({ "n" }, "<leader>sr", builtin.lsp_references)
-map({ "n" }, "<leader>sd", builtin.diagnostics)
-map({ "n" }, "<leader>sc", builtin.git_bcommits)
-map({ "n" }, "<leader>sk", builtin.keymaps)
+map({ "n" }, "<leader>f", ":Files<CR>")
+map({ "n" }, "<leader>so", ":History<CR>")
+map({ "n" }, "<leader>b", ":Buffers<CR>")
+map({ "n" }, "<leader>g", ":Rg<Space>")
 
 ----------------------------------------------------
 --> TMUX INTEGRATION

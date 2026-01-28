@@ -1,23 +1,20 @@
 I'm in too deep...
 ---
 **Main goals:**
-- [x] Fast
-- [x] Easy to maintain
-- [x] Minimized bloat
-- [x] Actually usable
+- [x] Single file configs
+- [x] Minimal / Zero plugins
 
 Far too much CSS, not enough Shell. Not based yet.
 
 **Todos:**
-- cook up a alpha.nvim / mini.starter type start screen, but more chill
-- vim script ?
+- learn vim script
 - make more cool shit 
 
 anyway... here are the dotfiles
 
 Editor -- `neovim`
 ---
-*pretty minimal setup, only a few plugins needed. there are many many binds, these are a few great ones:*
+*pretty happy with this -- only a few plugins needed. there are many many binds, these are a few great ones:*
 
 **Elevated Binds**
 ```
@@ -39,8 +36,12 @@ Editor -- `neovim`
 +-----------------+---------------------+
 | Bind            | Action              |
 +-----------------+---------------------+
-| <leader>ff      | Telescope           |
-| <leader>fg      | Live Grep           |
+| <leader>f       | Files               |
+| <leader>F       | Files + <dir_path>  |
+| <leader>h       | History             |
+| <leader>b       | Buffers             |
+| <leader>g       | Grep                |
+| <leader>lg      | Live Grep           |
 | <leader>/       | Mash                |
 +-----------------+---------------------+
 ```
@@ -50,7 +51,7 @@ Editor -- `neovim`
 +-----------------+---------------------+
 | Bind            | Action              |
 +-----------------+---------------------+
-| <leader>       | New tab             |
+| <leader>t       | New tab             |
 | <leader>x       | Close tab           |
 | Ctrl + h/j/k/l  | Navigate panes      |
 +-----------------+---------------------+
@@ -70,7 +71,8 @@ Shell -- `zsh`
 | tn              | tmux new            |
 | tls             | tmux ls             |
 | v               | nvim                |
-| blink           | blink.sh script     |
+| blink           | dotfiles helper     |
+| summon          | tmux session helper |
 +-----------------+---------------------+
 ```
 

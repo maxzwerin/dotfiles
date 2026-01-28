@@ -43,7 +43,7 @@ local utils = require "utils"
 
 local mash = require "mash"
 mash.setup()
-map({ "n" }, "<leader>jk", mash.jump)
+map({ "n" }, "<leader>/", mash.jump)
 
 ----------------------------------------------------
 --> LSP / TREESITTER / COLORS
@@ -96,7 +96,7 @@ map({ "n", "v", "x" }, "<leader>O", "<Cmd>restart<CR>")           -- restart
 map({ "n", "v", "x" }, "<leader>R", ":lua vim.pack.update()<CR>") -- update packages
 map({ "n", "v", "x" }, "<C-s>", [[:%s]])                          -- enter substitution mode in selection
 map({ "n", "v", "x" }, "<leader>lf", vim.lsp.buf.format)          -- format current buffer
-map({ "n" }, "<leader>e", ":Ex<CR>")                         -- file explorer
+map({ "n" }, "<leader>e", ":Ex<CR>")                              -- file explorer
 map({ "n" }, "<leader>c", "1z=")                                  -- autocorrect word under cursor
 map({ "n" }, "<leader>md", ":MarkdownPreview<CR>")                -- markdown preview
 map("n", "<leader>mc", utils.pack_clean)                          -- remove unused plugins
@@ -117,9 +117,11 @@ map({ "n" }, "N", "Nzzzv")
 --> FZF
 ----------------------------------------------------
 map({ "n" }, "<leader>f", ":Files<CR>")
-map({ "n" }, "<leader>so", ":History<CR>")
+map({ "n" }, "<leader>F", ":Files<Space>")
+map({ "n" }, "<leader>h", ":History<CR>")
 map({ "n" }, "<leader>b", ":Buffers<CR>")
 map({ "n" }, "<leader>g", ":Rg<Space>")
+map({ "n" }, "<leader>lg", ":RG<CR>")
 
 ----------------------------------------------------
 --> TMUX INTEGRATION

@@ -60,16 +60,28 @@ vim.lsp.enable { "lua_ls", "clangd", "rust_analyzer", "pyright" }
 
 require "vague".setup { transparent = true }
 vim.cmd "colorscheme vague"
-vim.cmd [[set completeopt+=menuone,noselect,popup]]
 
 ----------------------------------------------------
---> OTHER
+--> AUTOCOMPLETION
+----------------------------------------------------
+vim.api.nvim_create_autocmd('LspAttach', {
+    group = vim.api.nvim_create_augroup('my.lsp', {}),
+    callback = function(args)
+        local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+        if client:supports_method('textDocument/completion') then
+            -- Optional: trigger autocompletion on EVERY keypress. May be slow!
+            local chars = {}; for i = 32, 126 do table.insert(chars, string.char(i)) end
+            client.server_capabilities.completionProvider.triggerCharacters = chars
+            vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
+        end
+    end,
+})
+
+----------------------------------------------------
+--> QOL
 ----------------------------------------------------
 require "nvim-autopairs".setup()
 require "gitsigns".setup()
-
--- Switch CWD to the directory of the open buffer
-map({ "n" }, "<leader>cd", ":cd %:p:h<CR>:pwd<CR>")
 
 vim.cmd [[
 	nnoremap g= g+| " g=g=g= is less awkward than g+g+g+
@@ -81,6 +93,8 @@ vim.cmd [[
 	noremap! <c-r><c-p> <c-r>=expand('%:p')<cr>
 	xnoremap <expr> . "<esc><cmd>'<,'>normal! ".v:count1.'.<cr>'
 ]]
+
+vim.cmd [[set completeopt+=menuone,noselect,popup]]
 
 ----------------------------------------------------
 --> KEYBINDS
@@ -101,6 +115,7 @@ map({ "n" }, "<leader>c", "1z=")                                  -- autocorrect
 map({ "n" }, "<leader>md", ":MarkdownPreview<CR>")                -- markdown preview
 map("n", "<leader>mc", utils.pack_clean)                          -- remove unused plugins
 map("n", "<leader>d", vim.diagnostic.open_float)                  -- open diagnostics float
+map("n", "<leader>cd", ":cd %:p:h<CR>:pwd<CR>")                   -- switch to current dir
 
 vim.diagnostic.config { virtual_text = true }
 

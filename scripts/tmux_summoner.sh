@@ -3,6 +3,7 @@
 DIRS=(
     "$HOME/dev/mce/edi"
     "$HOME/dev/plants"
+    "$HOME/dev/chess"
     "$HOME/dotfiles"
 )
 

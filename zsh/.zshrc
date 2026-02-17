@@ -37,6 +37,8 @@ alias tn='tmux new -s '
 
 alias v='nvim'
 
+alias startx='start-hyprland'
+
 alias blink='bash ~/.config/scripts/blink.sh'
 alias summon='bash ~/.config/scripts/tmux_summoner.sh'
 

@@ -26,10 +26,10 @@ default_module_message = ""
 empty_module_message = ""
 suggestion_mode = "list"
 suggestion_lines = 12
-indicator_with_arg_module = "\u001B[31m^\u001B[0m "
-indicator_no_arg_module = "\u001B[31m$\u001B[0m "
+indicator_with_arg_module = "\u001B[34m+\u001B[0m "
+indicator_no_arg_module = "\u001B[34m-\u001B[0m "
 prefix_padding = 3
-prefix_color = "\u001B[33m"
+prefix_color = "\u001B[31m"
 description_color = "\u001B[39m"
 place_holder_color = "\u001B[30m"
 hint_color = "\u001B[30m"
@@ -57,7 +57,7 @@ cmd = "fsel -vv -r -d -ss \"{}\""
 with_argument = true
 
 [[modules]]
-description = "app launchpad"
+description = "launchpad"
 prefix = "app"
 cmd = "fsel -vv -r -d -p {}"
 with_argument = true

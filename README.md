@@ -1,189 +1,35 @@
-I'm in too deep...
----
-**Main goals:**
-- [x] Single file configs
-- [x] Minimal / Zero plugins
+dotfiles
+--
 
-Far too much CSS, not enough Shell. Not based yet.
+**main goals:**
+- [x] single file configs
+- [x] minimal / zero plugins
 
-**Todos:**
-- learn vim script
-- make more cool shit 
+too much css, not enough shell.
 
+**general info:**
+- **OS:** [Arch Linux](https://archlinux.org/)
+- **WM:** [Hyprland](https://github.com/hyprwm/Hyprland)
+- **Shell:** [zsh](https://www.zsh.org/)
+- **Editor:** [neovim](https://github.com/neovim/neovim) / [vim](https://github.com/vim/vim)
+- **Terminal:** [kitty](https://github.com/kovidgoyal/kitty) / [wezterm](https://github.com/wez/wezterm)
+- **Application Launcher:** [otter](https://github.com/kuokuo123/otter-launcher) + [fsel](https://github.com/Mjoyufull/fsel)
 
-TODO:
-- added pulsemixer, a tui alternative to pavucontrol (audio)
-- added fsel and otter-launcher
-- removed wofi
-- need to fix summon script
+**looking into:**
+- zsh --> bash
+- kitty --> foot
+- hypr --> niri
+- custom vim colorscheme
+- adding some screenshots here
 
-anyway... here are the dotfiles
+> [!CAUTION]
+> USE AT YOUR OWN RISK! you should probably read through things before installing.
 
-Editor -- `neovim`
----
-*pretty happy with this -- only a few plugins needed. there are many many binds, these are a few great ones:*
-
-**Elevated Binds**
+clone the dotfiles
 ```
-+-----------------+---------------------+
-| Bind            | Action              |
-+-----------------+---------------------+
-| <leader>w       | Write               |
-| <leader>q       | Quit                |
-| <leader>Q       | Write + quit        |
-| <leader>e       | File browser        |
-| <C-u> / <C-d>   | Centered up / down  |
-| n / N           | Centered find       |
-| <leader>n       | NORMMMM             |
-+-----------------+---------------------+
+git clone https://github.com/maxzwerin/dotfiles
 ```
-
-**Search**
+simple installation script
 ```
-+-----------------+---------------------+
-| Bind            | Action              |
-+-----------------+---------------------+
-| <leader>f       | Files               |
-| <leader>F       | Files + <dir_path>  |
-| <leader>h       | History             |
-| <leader>b       | Buffers             |
-| <leader>g       | Grep                |
-| <leader>lg      | Live Grep           |
-| <leader>/       | Mash                |
-+-----------------+---------------------+
-```
-
-**Tabs** *- tmux compatible*
-```
-+-----------------+---------------------+
-| Bind            | Action              |
-+-----------------+---------------------+
-| <leader>t       | New tab             |
-| <leader>x       | Close tab           |
-| Ctrl + h/j/k/l  | Navigate panes      |
-+-----------------+---------------------+
-```
-
-Shell -- `zsh`
----
-*it just works. nothing too fancy*
-
-**Some Aliasing**
-```
-+-----------------+---------------------+
-| Bind            | Action              |
-+-----------------+---------------------+
-| ..              | cd ..               |
-| ta              | tmux attach         |
-| tn              | tmux new            |
-| tls             | tmux ls             |
-| v               | nvim                |
-| blink           | dotfiles helper     |
-| summon          | tmux session helper |
-+-----------------+---------------------+
-```
-
-Terminal -- `wezterm / kitty`
----
-*Almost identical, kitty works better with hyprland*
-
-**Good Kitty**
-```
-+-----------------+---------------------+
-| Bind            | Action              |
-+-----------------+---------------------+
-| Ctrl Shift =/-  | +/- font size       |
-+-----------------+---------------------+
-```
-
-Terminal Muliplexer -- `tmux`
----
-*hella customized to play nice with neovim. no plugins needed*
-
-**Pane Navigation**
-```
-+-----------------+---------------------+
-| Bind            | Action              |
-+-----------------+---------------------+
-| prefix + -      | Split vertically    |
-| prefix + \      | Split horizontally  |
-| Ctrl + h/j/k/l  | Navigate panes      |
-+-----------------+---------------------+
-```
-
-**Big Boy Binds**
-```
-+-----------------+---------------------+
-| Bind            | Action              |
-+-----------------+---------------------+
-| prefix + c      | Create new window   |
-| prefix + Ctrl-s | Session navigation  |
-| prefix + g      | Open github @ pwd   |
-+-----------------+---------------------+
-```
-
-**Copy Mode**
-```
-+-----------------+---------------------+
-| Bind            | Action              |
-+-----------------+---------------------+
-| prefix + [      | Enter copy mode     |
-| Shift + v       | Start selection     |
-| y               | Copy selection      |
-| q               | Exit copy mode      |
-+-----------------+---------------------+
-```
-
-**Window Manager --** Hyprland
----
-*I'm tempted to try Niri but want to hold out a little longer.*
-
-**Main Binds**
-```
-+-----------------+---------------------+
-| Bind            | Action              |
-+-----------------+---------------------+
-| mod + RETURN    | Open terminal       |
-| mod + SPACE     | Open Wofi           |
-| mod + B         | Open browser        |
-| mod + C         | Kill current app    |
-+-----------------+---------------------+
-```
-**Window Management**
-```
-+-----------------+---------------------+
-| Bind            | Action              |
-+-----------------+---------------------+
-| mod + h/j/k/l   | Move focus          |
-| mod ALT h/j/k/l | Move window         |
-+-----------------+---------------------+
-```
-
-**Workspace Management**
-```
-+-----------------+---------------------+
-| Bind            | Action              |
-+-----------------+---------------------+
-| mod + 1-9       | Switch workspaces   |
-| mod SHIFT 1-9   | Window to workspace |
-+-----------------+---------------------+
-```
-**QOL**
-```
-input  {
-    repeat_rate = 35
-    repeat_delay = 200
-}
-```
-
-App Launcher -- `Wofi`
----
-*lightweight app launcher used with hyprland*
-
-```
-+-----------------+---------------------+
-| Bind            | Action              |
-+-----------------+---------------------+
-| Ctrl + j/k      | Vim-esq search      |
-+-----------------+---------------------+
+~/dotfiles/scripts/install_dots.sh
 ```

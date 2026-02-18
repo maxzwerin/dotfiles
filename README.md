@@ -10,6 +10,13 @@ Far too much CSS, not enough Shell. Not based yet.
 - learn vim script
 - make more cool shit 
 
+
+TODO:
+- added pulsemixer, a tui alternative to pavucontrol (audio)
+- added fsel and otter-launcher
+- removed wofi
+- need to fix summon script
+
 anyway... here are the dotfiles
 
 Editor -- `neovim`

@@ -13,6 +13,7 @@ external_editor = ""
 # \x1b should be replaced with \u001B
 [interface]
 header = """
+
   \u001B[34;1m$USER@$(printf $HOSTNAME)\u001B[0m
   󰘧 """
 header_cmd = ""
@@ -35,7 +36,6 @@ hint_color = "\u001B[30m"
 move_right = 0
 move_up = 0
 
-
 [[modules]]
 description = "search the web"
 prefix = "gg"
@@ -51,13 +51,13 @@ with_argument = true
 url_encode = true
 
 [[modules]]
-description = "app launcher"
+description = "fsel launcher"
 prefix = "a"
 cmd = "fsel -vv -r -d -ss \"{}\""
 with_argument = true
 
 [[modules]]
-description = "instant app launcher"
+description = "app launchpad"
 prefix = "app"
 cmd = "fsel -vv -r -d -p {}"
 with_argument = true
@@ -68,7 +68,7 @@ prefix = "cl"
 cmd = "fsel --cclip"
 
 [[modules]]
-description = "find pkgs"
+description = "find pkgs [AUR]"
 prefix = "pm"
 cmd = "xdg-open https://aur.archlinux.org/packages?K='{}'"
 with_argument = true

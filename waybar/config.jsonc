@@ -29,7 +29,7 @@
             "default": ["\uf026", "\uf027", "\uf028"]
         },
         "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
-        "on-click-right": "pavucontrol",
+        "on-click-right": "kitty -e pulsemixer",
         "format-muted": "\uf00d {volume}%  "
     }
 }

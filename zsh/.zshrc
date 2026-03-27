@@ -6,22 +6,22 @@ PS1="%{$fg[magenta]%}%~%{$fg[red]%} %{$reset_color%}$%b "
 HISTSIZE=10000
 SAVEHIST=10000
 
-finder() {
-    open .
-}
-zle -N finder
-bindkey '^f' finder
-
 # Basic auto/tab complete:
 autoload -U compinit && compinit
-autoload -U colors && colors
 zmodload zsh/complist
 
 _comp_options+=(globdots) # include hidden files
 
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
-source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+if [ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
+    source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+elif [ -f /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
+    source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+elif [ -f /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
+    source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+fi
 
 export EDITOR="nvim"
 export SUDO_EDITOR="nvim"
@@ -29,8 +29,6 @@ export SUDO_EDITOR="nvim"
 alias ll="ls -la"
 alias ..='cd ..'
 alias ...='cd ../../'
-alias ....='cd ../../../'
-alias .....='cd ../../../../'
 
 alias ta='tmux attach'
 alias tn='tmux new -s '

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 DIRS=(
     "$HOME/dev/mce/edi"
@@ -7,32 +7,42 @@ DIRS=(
     "$HOME/dotfiles"
 )
 
-shift $((OPTIND - 1))
-
-last_session=""
+# Build a map: session_name -> directory
+declare -A MAP
+ORDER=()
 
 for dir in "${DIRS[@]}"; do
     [ -d "$dir" ] || continue
-
     name="$(basename "$dir")"
-    last_session="$name"
+    MAP["$name"]="$dir"
+    ORDER+=("$name")
+done
 
-    if ! tmux has-session -t "$name" >/dev/null 2>&1; then
+# Determine target
+target="$1"
+
+# If argument provided, validate it
+if [ -n "$target" ]; then
+    if [ -z "${MAP[$target]}" ]; then
+        echo "Invalid target: $target" >&2
+        exit 1
+    fi
+else
+    # Default = first (topmost) directory
+    target="${ORDER[0]}"
+fi
+
+# Create sessions if they don't exist
+for name in "${ORDER[@]}"; do
+    dir="${MAP[$name]}"
+    if ! tmux has-session -t "$name" 2>/dev/null; then
         tmux new-session -d -s "$name" -c "$dir"
     fi
 done
 
-if [ -n "$1" ]; then
-    target="$(basename "$1")"
-
-    if tmux has-session -t "$target" >/dev/null 2>&1; then
-        exec tmux attach -t "$target"
-    else
-        echo "No tmux session for: $1" >&2
-        exit 1
-    fi
-fi
-
-if [ -n "$last_session" ] && [ -z "$TMUX" ]; then
-    exec tmux attach -t "$last_session"
+# Attach or switch
+if [ -n "$TMUX" ]; then
+    tmux switch-client -t "$target"
+else
+    exec tmux attach -t "$target"
 fi

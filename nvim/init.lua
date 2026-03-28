@@ -18,6 +18,7 @@ vim.opt.undofile = true           -- persistent undo
 vim.opt.signcolumn = "yes"        -- always show sign column
 vim.opt.clipboard = "unnamedplus" -- allows clipboard sync between clipboard & nvim env
 vim.opt.wrap = false              -- no wrapping please and thank you
+vim.opt.scrolloff = 8             -- scroll down before cursor gets to the bottom
 vim.g.netrw_banner = 0            -- remove ugly netrw banner
 
 vim.g.mapleader = " "
@@ -35,15 +36,11 @@ vim.pack.add {
     { src = "https://github.com/mason-org/mason.nvim" },
     { src = "https://github.com/neovim/nvim-lspconfig" },
     { src = "https://github.com/lewis6991/gitsigns.nvim" },
-    { src = "https://github.com/maxzwerin/mash.nvim" },
+    { src = "https://github.com/maxzwerin/vim-mash" },
 }
 
 local map = vim.keymap.set
 local utils = require "utils"
-
-local mash = require "mash"
-mash.setup()
-map({ "n" }, "<leader>/", mash.jump)
 
 ----------------------------------------------------
 --> LSP / TREESITTER / COLORS

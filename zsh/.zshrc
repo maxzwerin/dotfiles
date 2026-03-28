@@ -26,7 +26,8 @@ fi
 export EDITOR="nvim"
 export SUDO_EDITOR="nvim"
 
-alias ll="ls -la"
+alias ls="ls --color=auto"
+alias ll="ls -la --color=auto"
 alias ..='cd ..'
 alias ...='cd ../../'
 

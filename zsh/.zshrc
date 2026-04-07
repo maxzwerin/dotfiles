@@ -35,6 +35,7 @@ alias ta='tmux attach'
 alias tn='tmux new -s '
 
 alias v='nvim'
+alias vi='vim'
 
 alias startx='start-hyprland'
 

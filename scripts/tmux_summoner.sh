@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 
 DIRS=(
-    "$HOME/dev/mce/edi"
-    "$HOME/dev/plants"
-    "$HOME/dev/chess"
-    "$HOME/dev/statto"
     "$HOME/dotfiles"
+    "$HOME/dev/go"
+    "$HOME/dev/chess"
+    "$HOME/dev/plants"
+    "$HOME/dev/mce/edi"
+    "$HOME/dev/flatballstats"
+    "$HOME/.vim/"
+    "$HOME/.vim/plugged/vim-mash"
 )
 
 # Build a map: session_name -> directory

@@ -12,7 +12,7 @@ too much css, not enough shell.
 - **WM:** [Hyprland](https://github.com/hyprwm/Hyprland)
 - **Shell:** [zsh](https://www.zsh.org/)
 - **Editor:** [neovim](https://github.com/neovim/neovim) / [vim](https://github.com/vim/vim)
-- **Terminal:** [kitty](https://github.com/kovidgoyal/kitty) / [wezterm](https://github.com/wez/wezterm)
+- **Terminal:** [kitty](https://github.com/kovidgoyal/kitty)
 - **Application Launcher:** [otter](https://github.com/kuokuo123/otter-launcher) + [fsel](https://github.com/Mjoyufull/fsel)
 
 **looking into:**

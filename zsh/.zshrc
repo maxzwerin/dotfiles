@@ -43,3 +43,5 @@ alias blink='bash ~/.config/scripts/blink.sh'
 alias summon='bash ~/.config/scripts/tmux_summoner.sh'
 
 MAILSYNC_MUTE=1
+
+. "$HOME/.local/bin/env"

@@ -48,12 +48,12 @@ local utils = require "utils"
 require "nvim-highlight-colors".setup()
 
 -- check with :checkhealth nvim-treesitter
-require "nvim-treesitter".install { "c", "lua", "vim" }
+require "nvim-treesitter".install { "c", "lua", "vim", "go", "zig" }
 
 require "mason".setup()
 
 -- check with :checkhealth vim.lsp
-vim.lsp.enable { "lua_ls", "clangd", "rust_analyzer", "pyright" }
+vim.lsp.enable { "lua_ls", "clangd", "rust_analyzer", "pyright", "gopls", "zls" }
 
 require "vague".setup { transparent = true }
 vim.cmd "colorscheme vague"

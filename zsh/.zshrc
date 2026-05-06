@@ -37,10 +37,11 @@ alias tn='tmux new -s '
 alias v='nvim'
 alias vi='vim'
 
-alias startx='start-hyprland'
+alias hypr='start-hyprland'
 
 alias blink='bash ~/.config/scripts/blink.sh'
 alias summon='bash ~/.config/scripts/tmux_summoner.sh'
+alias dwl='bash ~/.config/scripts/dwl.sh'
 
 MAILSYNC_MUTE=1
 

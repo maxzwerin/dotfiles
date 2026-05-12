@@ -31,14 +31,12 @@ alias ll="ls -la --color=auto"
 alias ..='cd ..'
 alias ...='cd ../../'
 
-alias ta='tmux attach'
-alias tn='tmux new -s '
-
 alias v='nvim'
 alias vi='vim'
 
 alias blink='bash ~/.config/scripts/blink.sh'
-alias summon='bash ~/.config/scripts/tmux_summoner.sh'
+alias refresh='bash ~/.config/scripts/refresh.sh'
+alias gg='bash ~/.config/scripts/github.sh'
 alias dwl='bash ~/.config/scripts/dwl.sh'
 
 MAILSYNC_MUTE=1

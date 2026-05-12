@@ -1,18 +1,21 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-cd "$1" || exit 1
-url=$(git remote get-url origin)
+dir="${1:-.}"
 
-if [[ $url == *github.com* ]]; then
-    if [[ $url == git@* ]]; then
-        url="${url#git@}"
-        url="${url/:/\/}"
-        url="https://$url"
-    fi
-    xdg-open "$url" # for linux
-    # open "$url" # for mac
-    # wslview "$url" # for windows/wsl... i think?
-else
-    echo "This repository is not hosted on GitHub"
+cd "$dir" || {
+    echo "Invalid directory: $dir"
     exit 1
-fi
+}
+
+url=$(git remote get-url origin 2>/dev/null) || {
+    echo "No git remote found"
+    exit 1
+}
+
+case "$url" in
+    git@github.com:*)
+        url="https://github.com/${url#git@github.com:}"
+        ;;
+esac
+
+xdg-open "$url"

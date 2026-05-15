@@ -18,6 +18,7 @@ vim.o.list = true
 vim.o.path = "**"
 
 vim.o.clipboard = "unnamedplus"
+vim.o.signcolumn = "yes"
 vim.o.scrolloff = 8
 vim.g.netrw_banner = 0
 

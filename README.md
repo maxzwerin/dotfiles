@@ -8,14 +8,13 @@ dotfiles
 
 **general info:**
 - **OS:** [Arch Linux](https://archlinux.org/)
-- **WM:** [DWL](https://codeberg.org/dwl/dwl)
+- **WM:** [dwl](https://codeberg.org/dwl/dwl)
 - **Shell:** [zsh](https://www.zsh.org/)
-- **Editor:** [nvim](https://github.com/neovim/neovim) / [vim](https://github.com/vim/vim)
+- **Editor:** [nvim](https://github.com/neovim/neovim)
 - **Terminal:** [foot](https://codeberg.org/dnkl/foot)
-- **Application Launcher:** [wmenu](https://codeberg.org/adnano/wmenu/)
+- **Application Launcher:** [bemenu](https://github.com/Cloudef/bemenu)
 
 **looking into:**
 - more C
 - bash over zsh?
-- moving to vim... nvim config is basically vim
 - adding some screenshots here

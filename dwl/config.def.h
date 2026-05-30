@@ -6,10 +6,10 @@
 /* appearance */
 static const int sloppyfocus               = 1;  /* focus follows mouse */
 static const int bypass_surface_visibility = 0;  /* 1 means idle inhibitors will disable idle tracking even if it's surface isn't visible  */
-static const unsigned int borderpx         = 1;  /* border pixel of windows */
-static const float rootcolor[]             = COLOR(0x222222ff);
-static const float bordercolor[]           = COLOR(0x1e1f1eff);
-static const float focuscolor[]            = COLOR(0xef944dff);
+static const unsigned int borderpx         = 2;  /* border pixel of windows */
+static const float rootcolor[]             = COLOR(0x000000ff);
+static const float bordercolor[]           = COLOR(0x000000ff);
+static const float focuscolor[]            = COLOR(0xffffffff);
 static const float urgentcolor[]           = COLOR(0xf16e65ff);
 /* This conforms to the xdg-protocol. Set the alpha to zero to restore the old behavior */
 static const float fullscreen_bg[]         = {0.0f, 0.0f, 0.0f, 1.0f}; /* You can also use glsl colors */
@@ -116,8 +116,10 @@ static const enum libinput_config_tap_button_map button_map = LIBINPUT_CONFIG_TA
 
 /* commands */
 static const char *termcmd[] = { "foot", NULL };
-static const char *firefox[] = { "firefox", NULL };
+static const char *browser[] = { "zen-browser", NULL };
 static const char *audiocmd[] = { "foot", "-e", "pulsemixer", NULL };
+static const char *screenshot[] = { "sh", "-c", "grim -g \"$(slurp)\" - | wl-copy", NULL };
+static const char *colorpicker[] = { "wl-color-picker", "clipboard", NULL };
 // https://man.archlinux.org/man/bemenu.1.en
 static const char *menucmd[] = {
     "bemenu-run", "--single-instance", "--no-overlap", "-p", "",
@@ -132,7 +134,9 @@ static const Key keys[] = {
     { MODKEY,                    XKB_KEY_space,       spawn,            {.v = menucmd} },
     { MODKEY,                    XKB_KEY_Return,      spawn,            {.v = termcmd} },
     { MODKEY,                    XKB_KEY_a,           spawn,            {.v = audiocmd} },
-    { MODKEY,                    XKB_KEY_s,           spawn,            {.v = firefox} },
+    { MODKEY,                    XKB_KEY_s,           spawn,            {.v = browser} },
+    { MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_s,           spawn,            {.v = screenshot} },
+    { MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_c,           spawn,            {.v = colorpicker} },
     { MODKEY,                    XKB_KEY_j,           focusstack,       {.i = +1} },
     { MODKEY,                    XKB_KEY_k,           focusstack,       {.i = -1} },
     { MODKEY,                    XKB_KEY_i,           incnmaster,       {.i = +1} },

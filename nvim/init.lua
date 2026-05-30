@@ -49,13 +49,14 @@ map("n", "<leader>q", "<Cmd>:quit<CR>")
 map("n", "<leader>Q", "<Cmd>:quit!<CR>")
 map("n", "<leader>e", ":Ex<CR>")
 map("n", "<leader>v", ":edit $MYVIMRC<CR>")
-map("n", "<leader>o", ":update<CR> :source<CR>")
+map("n", "<leader>O", ":update<CR> :source<CR>")
 
 map("n", "<leader>f", ":find ")
 map("n", "<leader>g", ":Grep ")
 
 map("n", "<leader>r", ":make!<CR>")
 map("n", "<leader>R", ":set makeprg=")
+map("n", "<leader>o", ":copen<CR>")
 map("n", "<leader>x", ":cclose<CR>")
 map("n", "<leader>c", ":!ctags -R .<CR>")
 

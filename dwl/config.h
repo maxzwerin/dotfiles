@@ -123,8 +123,8 @@ static const char *colorpicker[] = { "wl-color-picker", "clipboard", NULL };
 // https://man.archlinux.org/man/bemenu.1.en
 static const char *menucmd[] = {
     "bemenu-run", "--single-instance", "--no-overlap", "-p", "",
-    "--fn", "Iosevka Nerd Font 16", "--bdr", "#ef944d", "--hf", "#ef944d",
-    "-c", "-l", "10", "-W", "0.15", "-B", "1",
+    "--fn", "Iosevka Nerd Font 16", "--bdr", "#ffffff", "--hf", "#ffffff",
+    "-c", "-l", "10", "-W", "0.15", "-B", "2",
     NULL
 };
 

@@ -122,11 +122,16 @@ static const char *screenshot[] = { "sh", "-c", "grim -g \"$(slurp)\" - | wl-cop
 static const char *colorpicker[] = { "wl-color-picker", "clipboard", NULL };
 // https://man.archlinux.org/man/bemenu.1.en
 static const char *menucmd[] = {
-    "bemenu-run", "--single-instance", "--no-overlap", "-p", "",
-    "--fn", "Iosevka Nerd Font 16", "--bdr", "#ffffff", "--hf", "#ffffff",
-    "-c", "-l", "10", "-W", "0.15", "-B", "2",
+    "j4-dmenu-desktop",
+    "--dmenu=bemenu -i --single-instance --no-overlap -p '' --fn 'Iosevka Nerd Font 16' --bdr '#ffffff' --hf '#ffffff' -c -l 10 -W 0.15 -B 2",
     NULL
 };
+// static const char *menucmd[] = {
+//     "bemenu-run", "--single-instance", "--no-overlap", "-p", "",
+//     "--fn", "Iosevka Nerd Font 16", "--bdr", "#ffffff", "--hf", "#ffffff",
+//     "-c", "-l", "10", "-W", "0.15", "-B", "2",
+//     NULL
+// };
 
 static const Key keys[] = {
     /* Note that Shift changes certain key codes: 2 -> at, etc. */

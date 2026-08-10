@@ -12,6 +12,7 @@ vim.o.incsearch = true
 vim.o.swapfile = false
 vim.o.backup = false
 vim.o.wrap = false
+vim.o.confirm = true
 vim.o.undofile = true
 vim.o.undodir = os.getenv("HOME") .. "/.cache/nvim/undodir"
 vim.o.list = true
@@ -25,7 +26,14 @@ vim.g.netrw_banner = 0
 vim.o.autocomplete = true
 vim.o.winborder = "rounded"
 
-vim.cmd(":colorscheme retrobox")
+vim.pack.add {
+    { src = 'https://github.com/nvim-treesitter/nvim-treesitter' },
+    { src = 'https://github.com/neovim/nvim-lspconfig' },
+    { src = 'https://github.com/vague-theme/vague.nvim' },
+}
+
+vim.cmd.colorscheme('vague')
+
 vim.cmd(":command! -nargs=+ Grep execute 'silent grep! <args>' | copen")
 
 local map = vim.keymap.set
@@ -62,10 +70,8 @@ map("n", "<leader>c", ":!ctags -R .<CR>")
 
 map("n", "<leader>d", vim.diagnostic.open_float)
 
-vim.treesitter.language.register("c", "h")
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "c", "h", "lua" },
-    callback = function() vim.treesitter.start() end,
+vim.api.nvim_create_autocmd('FileType', {
+    callback = function() pcall(vim.treesitter.start) end,
 })
 
 vim.lsp.config('clangd', {
@@ -78,8 +84,6 @@ vim.lsp.config('lua_ls', {
     settings = { Lua = { diagnostics = {globals = {'vim'}}}}
 })
 
-vim.lsp.enable { "lua_ls", "clangd" }
+vim.lsp.enable({ 'lua_ls', 'clangd' })
 vim.opt.complete:append('o')
 vim.opt.completeopt = { 'menuone', 'noselect' }
-
-

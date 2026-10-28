@@ -116,7 +116,7 @@ static const enum libinput_config_tap_button_map button_map = LIBINPUT_CONFIG_TA
 
 /* commands */
 static const char *termcmd[] = { "foot", NULL };
-static const char *browser[] = { "zen-browser", NULL };
+static const char *browser[] = { "sh", "-c", "exec \"$BROWSER\"", NULL };
 static const char *audiocmd[] = { "foot", "-e", "pulsemixer", NULL };
 static const char *screenshot[] = { "sh", "-c", "grim -g \"$(slurp)\" - | wl-copy", NULL };
 static const char *colorpicker[] = { "wl-color-picker", "clipboard", NULL };
